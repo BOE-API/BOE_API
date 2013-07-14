@@ -21,6 +21,7 @@ r = redis.StrictRedis(host='23.23.215.173', port=6379, db=0)
 c = int(r.get('counter_xml'))
 max = Documento.objects.count()
 while c < max:
+    print c
     r.set('counter_xml', c + 100)
     for doc in Documento.objects.all()[c:c+100]:
         print doc
@@ -34,6 +35,7 @@ while c < max:
             ant = etree.XPath("//anterior")
             post = etree.XPath("//posterior")
             for an in ant(root):
+
                 anterior = objectify.fromstring(etree.tostring(an))
                 referencia = anterior.get('referencia')
                 doc_ref = Documento(identificador=referencia)
@@ -41,6 +43,7 @@ while c < max:
                 palabra_codigo = anterior.palabra.get('codigo')
                 palabra_texto = anterior.palabra.text
                 texto = anterior.texto.text
+                print doc.ref.identificador
                 palabra = Palabra(codigo = palabra_codigo, titulo=palabra_texto)
                 palabra.save()
                 ref = Referencia(referencia=doc_ref, palabra=palabra, texto=texto)
