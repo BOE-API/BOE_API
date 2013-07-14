@@ -17,7 +17,7 @@ db = client['boe']
 docs = db['documento']
 global_diarios = []
 for skip in range(0, docs.count(), 100):
-    for doc in docs.find().skip(skip).limit(100):
+    for doc in docs.find({'_id': 'BOE-A-1960-13743'}).skip(skip).limit(100):
         print doc
 
         id = doc['_id']
@@ -56,12 +56,12 @@ for skip in range(0, docs.count(), 100):
         ORango = None
         if rango:
             ORango = Rango(codigo=rango['codigo'], titulo=rango['titulo'])
-            print ORango.titulo
+            # print ORango.titulo
             ORango.save()
         ODepartamento = None
         if dept:
             ODepartamento = Departamento(codigo=dept['codigo'], titulo=dept['titulo'])
-            print ODepartamento
+            # print ODepartamento
             ODepartamento.save()
 
         ONotas = []
@@ -69,8 +69,8 @@ for skip in range(0, docs.count(), 100):
             for nota in notas:
 
                 n = Nota(codigo=nota['codigo'], titulo=nota['titulo'])
-                print n.titulo
-                print n.codigo
+                # print n.titulo
+                # print n.codigo
                 try:
                     n.save()
                 except:
@@ -80,7 +80,7 @@ for skip in range(0, docs.count(), 100):
         if materias:
             for materia in materias:
                 m = Materia(codigo=materia['codigo'], titulo=materia['titulo'])
-                print m.titulo
+                # print m.titulo
                 m.save()
                 OMaterias.append(m)
         OAlertas = []
@@ -88,7 +88,7 @@ for skip in range(0, docs.count(), 100):
             for alerta in alertas:
                 a = Alerta(codigo=alerta['codigo'], titulo=alerta['titulo'])
                 a.save()
-                print a.titulo
+                # print a.titulo
                 OAlertas.append(a)
 
         ORef_Anteriores = []
@@ -96,7 +96,7 @@ for skip in range(0, docs.count(), 100):
             for r_ant in referencias_anteriores:
                 ra = Referencia(codigo=r_ant['codigo'], titulo=r_ant['titulo'])
                 ra.save()
-                print ra.titulo
+                # print ra.titulo
                 ORef_Anteriores.append(ra)
 
         ORef_Posteriores = []
@@ -104,7 +104,7 @@ for skip in range(0, docs.count(), 100):
             for r_ant in referencias_posteriores:
                 ra = Referencia(codigo=r_ant['codigo'], titulo=r_ant['titulo'])
                 ra.save()
-                print ra.titulo
+                # print ra.titulo
                 ORef_Posteriores.append(ra)
 
         documento = Documento()
