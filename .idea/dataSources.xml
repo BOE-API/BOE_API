@@ -5,7 +5,7 @@
       <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://23.20.83.86/boe</jdbc-url>
       <user-name>charlisim</user-name>
-      <user-password>df93df9fdf9ddf9fdf99df9fdf9bdf9f</user-password>
+      <user-password>dfdedfcfdfd9dfcbdf98df86dfc7dfdfdfc0dfc3dfd8</user-password>
       <libraries>
         <library>
           <url>file://$USER_HOME$/Library/Preferences/PyCharm20/jdbc-drivers/mysql-connector-license.txt</url>

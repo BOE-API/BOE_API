@@ -6,7 +6,7 @@ from boe_analisis.models import Diario, Documento, Departamento, Rango, Origen_l
 from boe_analisis.models import Estado_consolidacion, Nota, Materia, Alerta, Palabra, Referencia
 import os
 import sys
-
+import redis
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
@@ -16,8 +16,15 @@ client = MongoClient('mongodb://charlisim:tesa2,mujir@ds035118-a0.mongolab.com:3
 db = client['boe']
 docs = db['documento']
 global_diarios = []
-for skip in range(14700, docs.count(), 100):
-    for doc in docs.find().skip(skip).limit(100):
+r = redis.StrictRedis(host='23.23.215.173', port=6379, db=0)
+print r.get('counter')
+c = int(r.get('counter'))
+max = docs.count()
+while c < max:
+
+    r.set('counter', c + 100)
+    c = int(r.get('counter'))
+    for doc in docs.find().skip(c).limit(100):
         print doc
 
         id = doc['_id']
@@ -73,13 +80,13 @@ for skip in range(14700, docs.count(), 100):
                 # print n.codigo
                 try:
                     n.save()
-		    ONotas.append(n)		    
+                    ONotas.append(n)
                 except:
                     try:
-		        n = Nota.objects.get(codigo=nota['codigo'], titulo=nota['titulo'])
-                    	ONotas.append(n)
-		    except: 
-			pass
+                        n = Nota.objects.get(codigo=nota['codigo'], titulo=nota['titulo'])
+                        ONotas.append(n)
+                    except:
+                        pass
         OMaterias = []
         if materias:
             for materia in materias:
