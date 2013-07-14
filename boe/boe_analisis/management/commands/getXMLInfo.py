@@ -22,7 +22,7 @@ c = int(r.get('counter_xml'))
 max = Documento.objects.count()
 while c < max:
     r.set('counter_xml', c + 100)
-    for doc in Documento.objects.all()[c:100]:
+    for doc in Documento.objects.all()[c:c+100]:
         print doc
         url = doc.url_xml
         if (url):
