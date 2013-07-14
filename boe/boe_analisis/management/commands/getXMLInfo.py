@@ -70,7 +70,13 @@ while c < max:
                 palabra = Palabra(codigo = palabra_codigo, titulo=palabra_texto)
                 palabra.save()
                 ref = Referencia(referencia=doc_ref, palabra=palabra, texto=texto)
-                ref.save()
+                try:
+                    ref.save()
+                except:
+                    try:
+                        ref = Referencia.objects.get(referencia=doc_ref, palabra=palabra)
+                    except:
+                        pass
                 refPosteriores.append(ref)
 
             for ori in origen(root):
