@@ -43,7 +43,7 @@ while c < max:
                 palabra_codigo = anterior.palabra.get('codigo')
                 palabra_texto = anterior.palabra.text
                 texto = anterior.texto.text
-                print doc.ref.identificador
+                print doc_ref.identificador
                 palabra = Palabra(codigo = palabra_codigo, titulo=palabra_texto)
                 palabra.save()
                 ref = Referencia(referencia=doc_ref, palabra=palabra, texto=texto)
