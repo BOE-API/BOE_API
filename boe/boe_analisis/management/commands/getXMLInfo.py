@@ -65,4 +65,4 @@ while c < max:
             doc.referencias_posteriores = refPosteriores
             doc.save()
 
-        c = int(r.get('counter_xml'))
+    c = int(r.get('counter_xml'))
