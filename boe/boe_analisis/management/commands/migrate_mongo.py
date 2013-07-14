@@ -23,7 +23,7 @@ max = docs.count()
 while c < max:
 
     r.set('counter', c + 100)
-    c = int(r.get('counter'))
+
     for doc in docs.find().skip(c).limit(100):
         print doc
 
@@ -150,3 +150,4 @@ while c < max:
 
         documento.save()
 
+    c = int(r.get('counter'))
