@@ -16,8 +16,8 @@ client = MongoClient('mongodb://charlisim:tesa2,mujir@ds035118-a0.mongolab.com:3
 db = client['boe']
 docs = db['documento']
 global_diarios = []
-for skip in range(0, docs.count(), 100):
-    for doc in docs.find({'_id': 'BOE-A-1960-13743'}).skip(skip).limit(100):
+for skip in range(14700, docs.count(), 100):
+    for doc in docs.find().skip(skip).limit(100):
         print doc
 
         id = doc['_id']
@@ -73,9 +73,13 @@ for skip in range(0, docs.count(), 100):
                 # print n.codigo
                 try:
                     n.save()
+		    ONotas.append(n)		    
                 except:
-                    n = Nota.objects.get(codigo=nota['codigo'], titulo=nota['titulo'])
-                ONotas.append(n)
+                    try:
+		        n = Nota.objects.get(codigo=nota['codigo'], titulo=nota['titulo'])
+                    	ONotas.append(n)
+		    except: 
+			pass
         OMaterias = []
         if materias:
             for materia in materias:
