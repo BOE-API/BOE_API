@@ -32,6 +32,8 @@ while c < max:
             refAnteriores = []
             refPosteriores = []
             ref = etree.XPath("//referencias")
+            origen = etree.XPath("//origen_legislativo")
+            estado = etree.XPath("//estado_consolidacion")
             ant = etree.XPath("//anterior")
             post = etree.XPath("//posterior")
             for an in ant(root):
@@ -47,7 +49,14 @@ while c < max:
                 palabra = Palabra(codigo = palabra_codigo, titulo=palabra_texto)
                 palabra.save()
                 ref = Referencia(referencia=doc_ref, palabra=palabra, texto=texto)
-                ref.save()
+                try:
+                    ref.save()
+                except:
+                    try:
+                        ref = Referencia.objects.get(referencia=doc_ref, palabra=palabra)
+                    except:
+                        pass
+
                 refAnteriores.append(ref)
 
             for an in post(root):
@@ -63,6 +72,19 @@ while c < max:
                 ref = Referencia(referencia=doc_ref, palabra=palabra, texto=texto)
                 ref.save()
                 refPosteriores.append(ref)
+
+            for ori in origen(root):
+                origen_codigo = ori.get('codigo')
+                origen_texto = ori.text
+                orig = Origen_legislativo(codigo=int(origen_codigo), titulo=origen_texto)
+                orig.save()
+                doc.origen_legislativo = orig
+            for est in estado(root):
+                estado_codigo = est.get('codigo')
+                if (estado_codigo != ''):
+                    estado_texto = est.text
+                    estado = Estado_consolidacion(codigo=int(estado_codigo), titulo=estado_texto)
+                    estado.save()
 
             doc.referencias_anteriores = refAnteriores
             doc.referencias_posteriores = refPosteriores
