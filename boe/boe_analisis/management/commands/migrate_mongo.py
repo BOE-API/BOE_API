@@ -40,6 +40,17 @@ while c < max:
         fecha_publicacion = doc['fecha_publicacion'] if 'fecha_publicacion' in doc else None
         fecha_vigencia = doc['fecha_vigencia'] if 'fecha_vigencia' in doc else None
         fecha_derogacion = doc['fecha_derogacion'] if 'fecha_derogacion' in doc else None
+        letra_imagen = doc['letra_imagen'] if 'letra_imagen' in doc else None
+        pagina_inicial = doc['pagina_inicial'] if 'pagina_inicial' in doc else None
+        pagina_final = doc['pagina_final'] if 'pagina_final' in doc else None
+        suplemento_letra_imagen = doc['suplemento_letra_imagen'] if 'suplemento_letra_imagen' in doc else None
+        suplemento_pagina_inicial = doc['suplemento_pagina_inicial'] if 'suplemento_pagina_inicial' in doc else None
+        suplemento_pagina_final = doc['suplemento_pagina_final'] if 'suplemento_pagina_final' in doc else None
+        origen_legislativo = doc['origen_legislativo'] if 'origen_legislativo' in doc else None
+        estado_consolidacion = doc['estado_consolidacion'] if 'estado_consolidacion' in doc else None
+        estatus_legislativo = doc['estatus_legislativo'] if 'estatus_legislativo' in doc else None
+        judicialmente_anulada = doc['judicialmente_anulada'] if 'judicialmente_anulada' in doc else None
+        vigencia_agotada = doc['vigencia_agotada'] if 'vigencia_agotada' in doc else None
         url_epub = doc['url_epub'] if 'url_epub' in doc else None
         url_xml = doc['url_xml'] if 'url_xml' in doc else None
         print url_xml
@@ -70,6 +81,20 @@ while c < max:
             ODepartamento = Departamento(codigo=dept['codigo'], titulo=dept['titulo'])
             # print ODepartamento
             ODepartamento.save()
+
+        OOLegislativo = None
+        if origen_legislativo:
+            OOLegislativo = Origen_legislativo(codigo=origen_legislativo['codigo'],
+                                               titulo=origen_legislativo['titulo'])
+            # print ODepartamento
+            OOLegislativo.save()
+
+        OE_Consolidacion = None
+        if estado_consolidacion:
+            OE_Consolidacion = Estado_consolidacion(codigo=estado_consolidacion['codigo'],
+                                               titulo=estado_consolidacion['titulo'])
+            # print ODepartamento
+            OE_Consolidacion.save()
 
         ONotas = []
         if notas:
@@ -127,12 +152,26 @@ while c < max:
         documento.seccion = seccion
         documento.subseccion = subseccion
         documento.rango = ORango
-        documento.Departamento = ODepartamento
+        documento.departamento = ODepartamento
         documento.numero_oficial = num_oficial
         documento.fecha_disposicion = fecha_disposicion
         documento.fecha_publicacion = fecha_publicacion
         documento.fecha_vigencia = fecha_vigencia
         documento.fecha_derogacion = fecha_derogacion
+        documento.letra_imagen = letra_imagen
+        documento.pagina_inicial = pagina_inicial
+        documento.pagina_final = pagina_final
+        documento.suplemento_letra_imagen = suplemento_letra_imagen
+        documento.suplemento_pagina_inicial = suplemento_pagina_inicial
+        documento.suplemento_pagina_final = suplemento_pagina_final
+        documento.estatus_legislativo = estatus_legislativo
+        documento.origen_legislativo = OOLegislativo
+        documento.estado_consolidacion = OE_Consolidacion
+        documento.judicialmente_anulada = judicialmente_anulada
+        documento.vigencia_agotada = vigencia_agotada
+
+
+
         documento.url_epub = url_epub
         documento.url_xml = url_xml
         documento.url_htm = url_htm

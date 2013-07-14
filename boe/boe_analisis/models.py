@@ -46,10 +46,10 @@ class Palabra(models.Model):
 class Referencia(models.Model):
     referencia = models.ForeignKey('Documento')
     palabra = models.ForeignKey(Palabra)
-    texto = models.TextField()
+    texto = models.TextField(max_length=4000)
 
     class Meta:
-        unique_together = (('referencia','palabra','texto'),)
+        unique_together = (('referencia','palabra'),)
 
 
 class Documento(models.Model):
@@ -61,12 +61,24 @@ class Documento(models.Model):
     seccion = models.CharField(max_length=50, null=True)
     subseccion = models.CharField(max_length=50, null=True)
     rango = models.ForeignKey(Rango, null=True)
-    Departamento = models.ForeignKey(Departamento, null=True)
+    departamento = models.ForeignKey(Departamento, null=True)
     numero_oficial = models.CharField(max_length=50, null=True)
     fecha_disposicion = models.DateField(null=True)
     fecha_publicacion = models.DateField(null=True)
     fecha_vigencia = models.DateField(null=True)
     fecha_derogacion = models.DateField(null=True)
+    letra_imagen = models.CharField(max_length=10, null=True)
+    pagina_inicial = models.SmallIntegerField(null=True)
+    pagina_final = models.SmallIntegerField(null=True)
+    suplemento_letra_imagen = models.CharField(max_length=10, null=True)
+    suplemento_pagina_inicial = models.CharField(max_length=10, null=True)
+    suplemento_pagina_final = models.CharField(max_length=10, null=True)
+    estatus_legislativo = models.CharField(max_length=10, null=True)
+    origen_legislativo = models.ForeignKey(Origen_legislativo, null=True)
+    estado_consolidacion = models.ForeignKey(Estado_consolidacion, null=True)
+    judicialmente_anulada = models.NullBooleanField(null=True)
+    vigencia_agotada = models.NullBooleanField(null=True)
+
     url_epub = models.URLField(null=True)
     url_xml = models.URLField(null=True)
     url_htm = models.URLField(null=True)
