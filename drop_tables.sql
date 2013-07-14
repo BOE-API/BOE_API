@@ -1,0 +1,25 @@
+BEGIN;
+ALTER TABLE `boe_analisis_documento_notas` DROP FOREIGN KEY `documento_id_refs_identificador_3e49fd53`;
+ALTER TABLE `boe_analisis_documento_referencias_posteriores` DROP FOREIGN KEY `documento_id_refs_identificador_b1577c36`;
+ALTER TABLE `boe_analisis_documento_materias` DROP FOREIGN KEY `documento_id_refs_identificador_8c2a5101`;
+ALTER TABLE `boe_analisis_documento_alertas` DROP FOREIGN KEY `documento_id_refs_identificador_93ea8f8f`;
+ALTER TABLE `boe_analisis_documento_referencias_anteriores` DROP FOREIGN KEY `documento_id_refs_identificador_52651721`;
+ALTER TABLE `boe_analisis_referencia` DROP FOREIGN KEY `referencia_id_refs_identificador_ab29f970`;
+DROP TABLE `boe_analisis_documento`;
+DROP TABLE `boe_analisis_documento_notas`;
+DROP TABLE `boe_analisis_documento_referencias_posteriores`;
+DROP TABLE `boe_analisis_documento_materias`;
+DROP TABLE `boe_analisis_documento_alertas`;
+DROP TABLE `boe_analisis_documento_referencias_anteriores`;
+DROP TABLE `boe_analisis_referencia`;
+DROP TABLE `boe_analisis_palabra`;
+DROP TABLE `boe_analisis_alerta`;
+DROP TABLE `boe_analisis_materia`;
+DROP TABLE `boe_analisis_nota`;
+DROP TABLE `boe_analisis_estado_consolidacion`;
+DROP TABLE `boe_analisis_origen_legislativo`;
+DROP TABLE `boe_analisis_rango`;
+DROP TABLE `boe_analisis_departamento`;
+DROP TABLE `boe_analisis_diario`;
+
+COMMIT;
