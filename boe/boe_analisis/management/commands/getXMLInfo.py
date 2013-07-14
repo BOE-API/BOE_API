@@ -24,7 +24,7 @@ while c < max:
     print c
     r.set('counter_xml', c + 100)
     for doc in Documento.objects.all()[c:c+100]:
-        print doc
+        print doc.identificador
         url = doc.url_xml
         if (url):
             xml = URL(url).download()
