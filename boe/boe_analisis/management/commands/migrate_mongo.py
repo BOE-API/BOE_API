@@ -27,6 +27,7 @@ while c < max:
 
     for doc in docs.find().skip(c).limit(100):
         print doc
+
         id = doc['_id']
         titulo = doc['titulo']
         diario = doc['diario']
@@ -69,132 +70,124 @@ while c < max:
 
 
 
-        try:
-            try:
-                Odiario = Diario(codigo=diario['codigo'], titulo=diario['titulo'])
-                Odiario.save()
-            except:
-                pass
-            ORango = None
-            if rango:
-                ORango = Rango(codigo=rango['codigo'], titulo=rango['titulo'])
-                # print ORango.titulo
-                ORango.save()
-            ODepartamento = None
-            if dept:
-                ODepartamento = Departamento(codigo=dept['codigo'], titulo=dept['titulo'])
-                # print ODepartamento
-                ODepartamento.save()
+        Odiario = Diario(codigo=diario['codigo'], titulo=diario['titulo'])
+        Odiario.save()
+        ORango = None
+        if rango:
+            ORango = Rango(codigo=rango['codigo'], titulo=rango['titulo'])
+            # print ORango.titulo
+            ORango.save()
+        ODepartamento = None
+        if dept:
+            ODepartamento = Departamento(codigo=dept['codigo'], titulo=dept['titulo'])
+            # print ODepartamento
+            ODepartamento.save()
 
-            OOLegislativo = None
-            if origen_legislativo:
-                OOLegislativo = Origen_legislativo(codigo=origen_legislativo['codigo'],
-                                                   titulo=origen_legislativo['titulo'])
-                # print ODepartamento
-                OOLegislativo.save()
+        OOLegislativo = None
+        if origen_legislativo:
+            OOLegislativo = Origen_legislativo(codigo=origen_legislativo['codigo'],
+                                               titulo=origen_legislativo['titulo'])
+            # print ODepartamento
+            OOLegislativo.save()
 
-            OE_Consolidacion = None
-            if estado_consolidacion:
-                OE_Consolidacion = Estado_consolidacion(codigo=estado_consolidacion['codigo'],
-                                                   titulo=estado_consolidacion['titulo'])
-                # print ODepartamento
-                OE_Consolidacion.save()
+        OE_Consolidacion = None
+        if estado_consolidacion:
+            OE_Consolidacion = Estado_consolidacion(codigo=estado_consolidacion['codigo'],
+                                               titulo=estado_consolidacion['titulo'])
+            # print ODepartamento
+            OE_Consolidacion.save()
 
-            ONotas = []
-            if notas:
-                for nota in notas:
+        ONotas = []
+        if notas:
+            for nota in notas:
 
-                    n = Nota(codigo=nota['codigo'], titulo=nota['titulo'])
-                    # print n.titulo
-                    # print n.codigo
+                n = Nota(codigo=nota['codigo'], titulo=nota['titulo'])
+                # print n.titulo
+                # print n.codigo
+                try:
+                    n.save()
+                    ONotas.append(n)
+                except:
                     try:
-                        n.save()
+                        n = Nota.objects.get(codigo=nota['codigo'], titulo=nota['titulo'])
                         ONotas.append(n)
                     except:
-                        try:
-                            n = Nota.objects.get(codigo=nota['codigo'], titulo=nota['titulo'])
-                            ONotas.append(n)
-                        except:
-                            pass
-            OMaterias = []
-            if materias:
-                for materia in materias:
-                    m = Materia(codigo=materia['codigo'], titulo=materia['titulo'])
-                    # print m.titulo
-                    m.save()
-                    OMaterias.append(m)
-            OAlertas = []
-            if alertas:
-                for alerta in alertas:
-                    a = Alerta(codigo=alerta['codigo'], titulo=alerta['titulo'])
-                    a.save()
-                    # print a.titulo
-                    OAlertas.append(a)
+                        pass
+        OMaterias = []
+        if materias:
+            for materia in materias:
+                m = Materia(codigo=materia['codigo'], titulo=materia['titulo'])
+                # print m.titulo
+                m.save()
+                OMaterias.append(m)
+        OAlertas = []
+        if alertas:
+            for alerta in alertas:
+                a = Alerta(codigo=alerta['codigo'], titulo=alerta['titulo'])
+                a.save()
+                # print a.titulo
+                OAlertas.append(a)
 
-            ORef_Anteriores = []
-            if referencias_anteriores:
-                for r_ant in referencias_anteriores:
-                    ra = Referencia(codigo=r_ant['codigo'], titulo=r_ant['titulo'])
-                    ra.save()
-                    # print ra.titulo
-                    ORef_Anteriores.append(ra)
+        ORef_Anteriores = []
+        if referencias_anteriores:
+            for r_ant in referencias_anteriores:
+                ra = Referencia(codigo=r_ant['codigo'], titulo=r_ant['titulo'])
+                ra.save()
+                # print ra.titulo
+                ORef_Anteriores.append(ra)
 
-            ORef_Posteriores = []
-            if referencias_posteriores:
-                for r_ant in referencias_posteriores:
-                    ra = Referencia(codigo=r_ant['codigo'], titulo=r_ant['titulo'])
-                    ra.save()
-                    # print ra.titulo
-                    ORef_Posteriores.append(ra)
+        ORef_Posteriores = []
+        if referencias_posteriores:
+            for r_ant in referencias_posteriores:
+                ra = Referencia(codigo=r_ant['codigo'], titulo=r_ant['titulo'])
+                ra.save()
+                # print ra.titulo
+                ORef_Posteriores.append(ra)
 
-            documento = Documento()
-            documento.identificador = id
-            documento.titulo = titulo
-            documento.save()
-            documento.diario = Odiario
-            documento.diario_numero = diario_numero
-            documento.seccion = seccion
-            documento.subseccion = subseccion
-            documento.rango = ORango
-            documento.departamento = ODepartamento
-            documento.numero_oficial = num_oficial
-            documento.fecha_disposicion = fecha_disposicion
-            documento.fecha_publicacion = fecha_publicacion
-            documento.fecha_vigencia = fecha_vigencia
-            documento.fecha_derogacion = fecha_derogacion
-            documento.letra_imagen = letra_imagen
-            documento.pagina_inicial = pagina_inicial
-            documento.pagina_final = pagina_final
-            documento.suplemento_letra_imagen = suplemento_letra_imagen
-            documento.suplemento_pagina_inicial = suplemento_pagina_inicial
-            documento.suplemento_pagina_final = suplemento_pagina_final
-            documento.estatus_legislativo = estatus_legislativo
-            documento.origen_legislativo = OOLegislativo
-            documento.estado_consolidacion = OE_Consolidacion
-            documento.judicialmente_anulada = judicialmente_anulada
-            documento.vigencia_agotada = vigencia_agotada
+        documento = Documento()
+        documento.identificador = id
+        documento.titulo = titulo
+        documento.save()
+        documento.diario = Odiario
+        documento.diario_numero = diario_numero
+        documento.seccion = seccion
+        documento.subseccion = subseccion
+        documento.rango = ORango
+        documento.departamento = ODepartamento
+        documento.numero_oficial = num_oficial
+        documento.fecha_disposicion = fecha_disposicion
+        documento.fecha_publicacion = fecha_publicacion
+        documento.fecha_vigencia = fecha_vigencia
+        documento.fecha_derogacion = fecha_derogacion
+        documento.letra_imagen = letra_imagen
+        documento.pagina_inicial = pagina_inicial
+        documento.pagina_final = pagina_final
+        documento.suplemento_letra_imagen = suplemento_letra_imagen
+        documento.suplemento_pagina_inicial = suplemento_pagina_inicial
+        documento.suplemento_pagina_final = suplemento_pagina_final
+        documento.estatus_legislativo = estatus_legislativo
+        documento.origen_legislativo = OOLegislativo
+        documento.estado_consolidacion = OE_Consolidacion
+        documento.judicialmente_anulada = judicialmente_anulada
+        documento.vigencia_agotada = vigencia_agotada
 
 
 
-            documento.url_epub = url_epub
-            documento.url_xml = url_xml
-            documento.url_htm = url_htm
-            documento.url_pdf = url_pdf
-            documento.url_pdf_catalan = url_pdf_catalan
-            documento.url_pdf_euskera = url_pdf_euskera
-            documento.url_pdf_gallego = url_pdf_gallego
-            documento.url_pdf_valenciano = url_pdf_valenciano
-            documento.notas = ONotas
-            documento.materias = OMaterias
-            documento.alertas = OAlertas
-            documento.referencias_anteriores = ORef_Anteriores
-            documento.referencias_posteriores = ORef_Posteriores
-            documento.texto = texto
+        documento.url_epub = url_epub
+        documento.url_xml = url_xml
+        documento.url_htm = url_htm
+        documento.url_pdf = url_pdf
+        documento.url_pdf_catalan = url_pdf_catalan
+        documento.url_pdf_euskera = url_pdf_euskera
+        documento.url_pdf_gallego = url_pdf_gallego
+        documento.url_pdf_valenciano = url_pdf_valenciano
+        documento.notas = ONotas
+        documento.materias = OMaterias
+        documento.alertas = OAlertas
+        documento.referencias_anteriores = ORef_Anteriores
+        documento.referencias_posteriores = ORef_Posteriores
+        documento.texto = texto
 
-            documento.save()
-        except:
-            f = file('docs_failed.txt', 'w+')
-            f.write(id)
-            f.close()
+        documento.save()
+
     c = int(r.get('counter'))
-
