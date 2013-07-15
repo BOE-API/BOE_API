@@ -20,14 +20,13 @@ r = redis.StrictRedis(host='23.23.215.173', port=6379, db=0)
 print r.get('counter')
 c = int(r.get('counter'))
 max = docs.count()
-f = file('docs_failed.txt', 'w+')
+
 while c < max:
 
     r.set('counter', c + 100)
 
     for doc in docs.find().skip(c).limit(100):
         print doc
-
         id = doc['_id']
         titulo = doc['titulo']
         diario = doc['diario']
@@ -71,8 +70,11 @@ while c < max:
 
 
         try:
-            Odiario = Diario(codigo=diario['codigo'], titulo=diario['titulo'])
-            Odiario.save()
+            try:
+                Odiario = Diario(codigo=diario['codigo'], titulo=diario['titulo'])
+                Odiario.save()
+            except:
+                pass
             ORango = None
             if rango:
                 ORango = Rango(codigo=rango['codigo'], titulo=rango['titulo'])
@@ -191,8 +193,8 @@ while c < max:
 
             documento.save()
         except:
+            f = file('docs_failed.txt', 'w+')
             f.write(id)
-
+            f.close()
     c = int(r.get('counter'))
 
-f.close()
