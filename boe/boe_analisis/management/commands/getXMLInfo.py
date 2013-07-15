@@ -69,28 +69,30 @@ while c < max:
                     palabra_codigo = anterior.palabra.get('codigo')
                     palabra_texto = anterior.palabra.text
                     texto = anterior.texto.text
-                    palabra = Palabra(codigo = palabra_codigo, titulo=palabra_texto)
-                    palabra.save()
-                    ref = Referencia(referencia=doc_ref, palabra=palabra, texto=texto)
-                    try:
-                        ref.save()
-                    except:
+                    if texto:
+                        palabra = Palabra(codigo = palabra_codigo, titulo=palabra_texto)
+                        palabra.save()
+                        ref = Referencia(referencia=doc_ref, palabra=palabra, texto=texto)
                         try:
-                            ref = Referencia.objects.get(referencia=doc_ref, palabra=palabra)
+                            ref.save()
                         except:
-                            pass
-                    refPosteriores.append(ref)
+                            try:
+                                ref = Referencia.objects.get(referencia=doc_ref, palabra=palabra)
+                            except:
+                                pass
+                        refPosteriores.append(ref)
 
                 for ori in origen(root):
                     origen_codigo = ori.get('codigo')
                     origen_texto = ori.text
-                    orig = Origen_legislativo(codigo=int(origen_codigo), titulo=origen_texto)
-                    orig.save()
-                    doc.origen_legislativo = orig
+                    if origen_texto:
+                        orig = Origen_legislativo(codigo=int(origen_codigo), titulo=origen_texto)
+                        orig.save()
+                        doc.origen_legislativo = orig
                 for est in estado(root):
                     estado_codigo = est.get('codigo')
-                    if (estado_codigo != ''):
-                        estado_texto = est.text
+                    estado_texto = est.text
+                    if estado_codigo != '' and estado_texto:
                         estado = Estado_consolidacion(codigo=int(estado_codigo), titulo=estado_texto)
                         estado.save()
 

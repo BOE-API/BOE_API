@@ -29,9 +29,11 @@ while c < max:
         print doc
 
         id = doc['_id']
-        titulo = doc['titulo']
+
         diario = doc['diario']
-        seccion = doc['seccion']
+        titulo = doc['titulo'] if 'titulo' in doc else None
+        seccion = doc['seccion'] if 'seccion' in doc else None
+        rango = doc['rango'] if 'rango' in doc else None
         rango = doc['rango'] if 'rango' in doc else None
         subseccion = doc['subseccion'] if 'subseccion' in doc else None
         diario_numero = doc['diario_numero'] if 'diario_numero' in doc else None
