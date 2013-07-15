@@ -8,5 +8,6 @@ redis==2.7.6
 wsgiref==0.1.2
 greenlet
 gevent
+pyzmq
 circus
 circus-web
