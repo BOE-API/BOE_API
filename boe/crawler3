@@ -1,0 +1,12 @@
+#!/bin/sh
+
+sudo apt-get install python-pip -y
+sudo apt-get install python-dev libmysqlclient-dev
+sudo apt-get install git -y
+sudo apt-get install libxml2-dev
+sudo apt-get install libxslt1-dev
+sudo apt-get install python-dev
+git clone https://charlisim:tesa2,mujir@bitbucket.org/charlisim/boe_django.git
+cd boe_django
+sudo pip install -r requirements.txt
+
