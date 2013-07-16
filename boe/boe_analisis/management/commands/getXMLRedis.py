@@ -17,6 +17,7 @@ from pattern.web import URL
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
+       fillRedis()
        print 'Probando mongo'
 
 
@@ -265,9 +266,7 @@ def fillRedis():
             r.delete(k)
         anyo = r_count.set('anyo', int(r_count.get('anyo'))+1)
 
-if __name__ == '__main__':
-    fillRedis()
-#
+
 # for k in r.keys('*-18??-*'):
 #             documento = Documento()
 #             print k
