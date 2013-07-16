@@ -48,7 +48,7 @@ while int(count) < max:
         url = url_a_pattern.format(e.identificador)
         print url
         fillDocumentXMLData(url, e)
-        count = int(r.set('count_empty',int(r_count.get('count_empty')) + 10));
+    count = int(r.set('count_empty',int(r_count.get('count_empty')) + 10));
 
 
 
