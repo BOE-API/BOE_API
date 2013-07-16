@@ -43,12 +43,12 @@ test = Documento.objects.filter(titulo=None).exclude(
     Q(identificador__istartswith='BOA'))
 
 while int(count) < max:
-
-    for e in test[count:count+10]:
+    count = r_count.get('count_empty');
+    for e in test[count-10:count]:
         url = url_a_pattern.format(e.identificador)
         print url
         fillDocumentXMLData(url, e)
-    count = int(r.set('count_empty',int(r_count.get('count_empty')) + 10));
+
 
 
 
