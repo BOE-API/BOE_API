@@ -116,7 +116,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    '/Users/Carlos/Dropbox/proyectos/boe_crawler_django/boe/templates',
+    '/home/ubuntu/boe_django/boe/templates',
 )
 
 INSTALLED_APPS = (
@@ -127,15 +127,20 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
+    'haystack',
     'boe_analisis',
     'south',
     # Uncomment the next line to enable the admin:
 
-
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
-
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
+        'URL': 'http://127.0.0.1:8983/solr'
+    },
+}
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
 # the site admins on every HTTP 500 error when DEBUG=False.
