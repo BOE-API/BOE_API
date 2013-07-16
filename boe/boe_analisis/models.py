@@ -95,7 +95,6 @@ class Documento(models.Model):
     referencias_anteriores = models.ManyToManyField(Referencia, related_name='ref_anteriores')
     referencias_posteriores = models.ManyToManyField(Referencia, related_name='ref_posteriores')
     texto = models.TextField(null=True)
-    texto_corto = models.CharField(max_length=65535, null=True)
 
     def __unicode__(self):
         return self.identificador

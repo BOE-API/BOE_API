@@ -243,7 +243,7 @@ def fillDocumentXMLData(url_xml_Input, documento):
             documento.referencias_posteriores = refPosteriores
     if hasattr(rootXML, 'texto'):
         textoString = etree.tostring(rootXML.texto, pretty_print=True)
-        documento.texto_html = textoString
+        documento.texto = textoString
     if notas:
         documento.notas = notas
     if alertas:
@@ -252,9 +252,8 @@ def fillDocumentXMLData(url_xml_Input, documento):
 
 
 def fillRedis():
-    pattern = '*-{0}-*'
-    anyo = r_count.get('anyo')
-    print anyo
+    pattern = '*'
+
     while int(anyo) <= 2013:
         search = pattern.format(r_count.get('anyo'))
         r_count.incr('anyo')
