@@ -257,14 +257,18 @@ def fillRedis():
     print anyo
     while int(anyo) <= 2013:
         search = pattern.format(r_count.get('anyo'))
-
+        r.incr('anyo')
         print search
         for k in r.keys(search):
             documento = Documento()
             print k
-            fillDocumentXMLData(k, documento)
-            r.delete(k)
-        anyo = r_count.set('anyo', int(r_count.get('anyo'))+1)
+            try:
+                fillDocumentXMLData(k, documento)
+                r.delete(k)
+            except:
+                pass
+
+        anyo = r_count.get('anyo')
 
 
 # for k in r.keys('*-18??-*'):
