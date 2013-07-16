@@ -257,7 +257,7 @@ def fillRedis():
     print anyo
     while int(anyo) <= 2013:
         search = pattern.format(r_count.get('anyo'))
-        r.incr('anyo')
+        r_count.incr('anyo')
         print search
         for k in r.keys(search):
             documento = Documento()
