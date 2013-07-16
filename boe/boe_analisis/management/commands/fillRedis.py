@@ -56,6 +56,7 @@ def generalFill(params):
             if reg:
                 id = reg.group(1)
                 url_id =  url_xml.format(id)
+                print url_id
                 r.set(url_id, 0)
 
 
@@ -77,6 +78,16 @@ def fillComunidades():
             })
         generalFill(params)
 
+def fillEstatal():
+    for times in range(0, 183391, 1000):
+        params = urllib.urlencode({
+            'accion' : 'Mas',
+            'id_busqueda': '09aeb0209ecc876d819e3958a60ba9c7-{0}-1000'.format(times),
+
+            })
+        generalFill(params)
+
 fillBormce()
 fillUE()
 fillComunidades()
+fillEstatal()
