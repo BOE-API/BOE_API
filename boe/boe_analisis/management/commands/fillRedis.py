@@ -24,13 +24,19 @@ class Command(BaseCommand):
 
 r = redis.StrictRedis(host='50.17.220.245', port=6379, db=0)
 bormce_url_s = 'http://www.boe.es/diario_borme/xml.php?id=BORME-S-{0}-{1}'
+bormce_url_xml = 'http://www.boe.es/diario_borme/xml.php?id={0}'
 
 def fillBormce():
     for anyo in range(2001, 2014):
         for dia in range(1, 365):
             url =  bormce_url_s.format(anyo, dia)
-            r.set(url, 0)
-
+            req = requests.get(url)
+            bs = BeautifulSoup(req.content)
+            for x in bs.findAll('seccion', num='C'):
+                for item in x.findAll('item'):
+                    url_bormce =  bormce_url_xml.format(item.get('id'))
+                    print url_bormce
+                    r.set(url_bormce, 0)
 def generalFill(params):
     url = 'http://www.boe.es/legislacion/legislacion.php?'
     url_xml = 'http://www.boe.es/diario_boe/xml.php?id={0}'
@@ -71,6 +77,6 @@ def fillComunidades():
             })
         generalFill(params)
 
-
-# fillUE()
+fillBormce()
+fillUE()
 fillComunidades()
