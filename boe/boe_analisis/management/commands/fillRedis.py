@@ -100,15 +100,16 @@ def fillInDB():
             print doc['url_xml']
         c = int(r_count.get('xmlDB'))
 
-if (r_count.get('bormce') == '0'):
-    fillBormce()
-    r_count.set('bormce', 1)
-if (r_count.get('UE') == '0'):
-    fillUE()
-    r_count.set('bormce', 1)
-if (r_count.get('CCAA') == '0'):
-    fillComunidades()
-    r_count.set('CCAA', 1)
+# if (r_count.get('bormce') == '0'):
+#     fillBormce()
+#     r_count.set('bormce', 1)
+# if (r_count.get('UE') == '0'):
+#     fillUE()
+#     r_count.set('UE', 1)
+# if (r_count.get('CCAA') == '0'):
+#     fillComunidades()
+#     r_count.set('CCAA', 1)
 if (r_count.get('DB') == '0'):
-    fillEstatal()
+
+    fillInDB()
     r_count.set('DB', 1)
