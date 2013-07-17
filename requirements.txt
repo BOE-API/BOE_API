@@ -15,6 +15,5 @@ haystack
 django-haystack
 pysolr
 pyzmq
-haystack
 circus
 circus-web
