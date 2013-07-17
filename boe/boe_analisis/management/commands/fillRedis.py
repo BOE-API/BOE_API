@@ -83,7 +83,7 @@ def fillEstatal():
     for times in range(0, 183391, 1000):
         params = urllib.urlencode({
             'accion' : 'Mas',
-            'id_busqueda': '09aeb0209ecc876d819e3958a60ba9c7-{0}-1000'.format(times),
+            'id_busqueda': '9aad68ea926824c1b16313c0a16cf085-{0}-1000'.format(times),
 
             })
         generalFill(params, 'BOE')
@@ -109,7 +109,8 @@ def fillInDB():
 # if (r_count.get('CCAA') == '0'):
 #     fillComunidades()
 #     r_count.set('CCAA', 1)
-if (r_count.get('DB') == '0'):
-
-    fillInDB()
-    r_count.set('DB', 1)
+# r_count.set('estatal', 0)
+# fillEstatal()
+if r_count.get('estatal') == '0':
+    fillEstatal()
+    r_count.set('estatal', 1)
