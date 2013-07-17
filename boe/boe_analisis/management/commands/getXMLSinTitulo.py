@@ -37,12 +37,12 @@ else:
     sys.exit()
 
 
-max = 300
+max = r.llen(rango)
 count = 0
 test_ue = r.lrange(rango, count, count+100)
 
 # print test_ue
-print test_ue
+
 
 while count < max:
     test_ue = r.lrange(rango, count, count+100)

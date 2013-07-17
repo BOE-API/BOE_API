@@ -100,6 +100,7 @@ def fillDocumentXMLData(url_xml_Input, documento):
         documento.fecha_disposicion = textToDate(metadatos.fecha_disposicion.text)
     if hasattr(metadatos, 'fecha_publicacion'):
         documento.fecha_publicacion = textToDate(metadatos.fecha_publicacion.text)
+        print  textToDate(metadatos.fecha_publicacion.text)
     if hasattr(metadatos, 'fecha_vigencia'):
         documento.fecha_vigencia = textToDate(metadatos.fecha_vigencia.text)
     if hasattr(metadatos, 'fecha_derogacion'):
