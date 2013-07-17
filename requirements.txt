@@ -12,5 +12,6 @@ wsgiref==0.1.2
 greenlet
 gevent
 pyzmq
+haystack
 circus
 circus-web
