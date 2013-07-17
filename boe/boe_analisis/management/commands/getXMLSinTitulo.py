@@ -36,21 +36,31 @@ else:
     print 'manda un argumento'
     sys.exit()
 
-
+if len(sys.argv) >=4:
+    count = int(sys.argv[3])
+else:
+    count = int(r_count.get(rango))
 max = r.llen(rango)
-count = 0
+
 test_ue = r.lrange(rango, count, count+100)
 
 # print test_ue
 
 
 while count < max:
+    print count
     test_ue = r.lrange(rango, count, count+100)
+    r_count.set(rango, int(count+100))
     for url in test_ue:
-        documento = Documento()
-        fillDocumentXMLData(url, documento)
-        print url
+        try:
+            documento = Documento()
+            fillDocumentXMLData(url, documento)
+            print url
+        except:
+            print 'fallo en: ' + url
+            r.lpush('fallo_'+rango, url)
     count += 100
+
     print count
 
 

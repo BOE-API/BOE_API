@@ -66,6 +66,8 @@ def fillDocumentXMLData(url_xml_Input, documento):
         documento.identificador = metadatos.identificador.text
         documento.url_xml = url_a_pattern.format(metadatos.identificador.text)
         documento.url_htm = url_a_html_pattern.format(metadatos.identificador.text)
+    else:
+        raise Exception
     if hasattr(metadatos, 'titulo'):
         documento.titulo = metadatos.titulo.text
     if hasattr(metadatos, 'diario'):
