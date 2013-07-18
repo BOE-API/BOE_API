@@ -26,7 +26,7 @@ url_a_pattern =  "http://www.boe.es/diario_boe/xml.php?id={0}"
 url_a_html_pattern = "http://www.boe.es/diario_boe/txt.php?id={0}"
 
 r_count = redis.StrictRedis(host='23.23.215.173', port=6379, db=0)
-r = redis.StrictRedis(host='50.17.220.245', port=6379, db=0)
+r = redis.StrictRedis(host='REDIS', port=6379, db=0)
 
 
 if (len(sys.argv) >= 3):
