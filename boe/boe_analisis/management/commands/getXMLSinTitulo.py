@@ -25,7 +25,7 @@ url_s_pattern = "http://www.boe.es/diario_boe/xml.php?id=BOE-S-{0}-{1}"
 url_a_pattern =  "http://www.boe.es/diario_boe/xml.php?id={0}"
 url_a_html_pattern = "http://www.boe.es/diario_boe/txt.php?id={0}"
 
-r_count = redis.StrictRedis(host='23.23.215.173', port=6379, db=0)
+r_count = redis.StrictRedis(host='crawler1', port=6379, db=0)
 r = redis.StrictRedis(host='REDIS', port=6379, db=0)
 
 
