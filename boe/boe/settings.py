@@ -116,7 +116,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    '/home/ubuntu/boe_django/boe/templates',
+    '/Users/Carlos/Dropbox/proyectos/boe_crawler_django/boe/templates',
 )
 
 INSTALLED_APPS = (
@@ -138,7 +138,7 @@ INSTALLED_APPS = (
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
-        'URL': 'http://127.0.0.1:8983/solr'
+        'URL': 'http://23.22.172.192:8983/solr'
     },
 }
 # A sample logging configuration. The only tangible logging

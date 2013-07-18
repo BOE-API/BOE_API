@@ -3,7 +3,11 @@ from boe_analisis.models import Documento
 from boe_analisis.models import *
 class JobIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True, model_attr='texto')
-    titulo = indexes.CharField(model_attr='titulo') 
+    titulo = indexes.CharField(model_attr='titulo')
+    fecha_publicacion = indexes.DateField(model_attr='fecha_publicacion')
+    departamento = indexes.CharField(model_attr='departamento_titulo')
+    materias = indexes.CharField(model_attr='materias_titulo', )
+
     def get_model(self):
         return Documento
  
