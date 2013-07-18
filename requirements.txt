@@ -16,3 +16,4 @@ pysolr
 pyzmq
 circus
 circus-web
+django-redis-cache

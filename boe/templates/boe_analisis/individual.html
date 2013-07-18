@@ -29,11 +29,53 @@
                       {% endif %}
                   </div>
             <hr />
+            <div id="materias">
+                {% for materia in doc.materias.all %}
+                    <span class="materia">
+                        <a href="/materias/{{ materia.codigo }}">{{ materia.titulo }}</a>
+                    </span>
+                {% endfor %}
+            </div>
 
             <div class="span12">
+                {% if doc.texto %}
+
                 {% autoescape off %}
                 {{ doc.texto }}
                 {% endautoescape %}
+                {% else %}
+                <embed src="{{ doc.url_pdf }}" width="600" height="500" alt="pdf" pluginspage="http://www.adobe.com/products/acrobat/readstep2.html">
+                {% endif %}
+
+            </div>
+
+            <div id="analisis">
+                {% if doc.referencias_anteriores.all %}
+                    <h3>Referencias Anteriores</h3>
+                    {% for ref_ant in doc.referencias_anteriores.all %}
+                        <p>{{ ref_ant.palabra.titulo }}
+                            {% if ref_ant.referencia.titulo %}
+                            <a href="{{ ref_ant.referencia.identificador }}">{{ ref_ant.referencia.identificador }}</a>
+                            {% else %}
+                                {{ ref_ant.referencia.identificador }}
+                            {% endif %}
+                        {{ ref_ant.texto }}</p>
+
+                    {% endfor %}
+                {% endif %}
+                {% if doc.referencias_posteriores.all %}
+                    <h3>Referencias Posteriores</h3>
+                    {% for ref_post in doc.referencias_posteriores.all %}
+                        <p>{{ ref_post.palabra.titulo }}
+                            {% if ref_post.referencia.titulo %}
+                            <a href="{{ ref_post.referencia.identificador }}">{{ ref_post.referencia.identificador }}</a>
+                            {% else %}
+                                {{ ref_post.referencia.identificador }}
+                            {% endif %}
+                        {{ ref_post.texto }}</p>
+
+                    {% endfor %}
+                {% endif %}
             </div>
 
 
