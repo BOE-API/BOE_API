@@ -54,10 +54,21 @@ class Referencia(models.Model):
     # def __unicode__(self):
     #     return self.palabra.codigo
 
+class Partido(models.Model):
+
+    nombre = models.CharField(max_length=200)
+
+class Legislatura(models.Model):
+    inicio = models.DateField()
+    final = models.DateField()
+    partido = models.ForeignKey(Partido)
+
+
+
 class Documento(models.Model):
 
-    identificador = models.CharField(max_length=25, primary_key=True)
-    titulo = models.CharField(null=True, max_length=1500, default='')
+    identificador = models.CharField(max_length=25, db_index=True)
+    titulo = models.CharField(null=True, max_length=1500, default='', db_index=True)
     diario = models.ForeignKey(Diario, null=True)
     diario_numero = models.IntegerField(null=True)
     seccion = models.CharField(max_length=50, null=True, default='')
@@ -66,7 +77,7 @@ class Documento(models.Model):
     departamento = models.ForeignKey(Departamento, null=True)
     numero_oficial = models.CharField(max_length=50, null=True, default='')
     fecha_disposicion = models.DateField(null=True)
-    fecha_publicacion = models.DateField(null=True)
+    fecha_publicacion = models.DateField(null=True, db_index=True)
     fecha_vigencia = models.DateField(null=True)
     fecha_derogacion = models.DateField(null=True)
     letra_imagen = models.CharField(max_length=10, null=True, default='')
@@ -80,9 +91,9 @@ class Documento(models.Model):
     estado_consolidacion = models.ForeignKey(Estado_consolidacion, null=True)
     judicialmente_anulada = models.NullBooleanField(null=True)
     vigencia_agotada = models.NullBooleanField(null=True)
-
+    legislatura = models.ForeignKey(Legislatura,null=True)
     url_epub = models.URLField(null=True)
-    url_xml = models.URLField(null=True)
+    url_xml = models.URLField(null=True, db_index=True)
     url_htm = models.URLField(null=True)
     url_pdf = models.URLField(null=True)
     url_pdf_catalan = models.URLField(null=True)
