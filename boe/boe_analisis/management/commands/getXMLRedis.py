@@ -64,6 +64,7 @@ def fillDocumentXMLData(url_xml_Input, documento):
     metadatos = rootXML.metadatos
     if hasattr(metadatos, 'identificador'):
         documento.identificador = metadatos.identificador.text
+
         documento.url_xml = url_a_pattern.format(metadatos.identificador.text)
         documento.url_htm = url_a_html_pattern.format(metadatos.identificador.text)
     else:
@@ -223,7 +224,9 @@ def fillDocumentXMLData(url_xml_Input, documento):
         documento.notas = notas
     if alertas:
         documento.alertas = alertas
+
     documento.save()
+    return documento
 
 
 def fillRedis():

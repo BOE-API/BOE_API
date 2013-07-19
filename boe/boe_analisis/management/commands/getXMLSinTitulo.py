@@ -51,11 +51,15 @@ while count < max:
     print count
     test_ue = r.lrange(rango, count, count+100)
     r_count.set(rango, int(count+100))
+    docs = []
     for url in test_ue:
 
         documento = Documento()
-        fillDocumentXMLData(url, documento)
+        documento = fillDocumentXMLData(url, documento)
+
+        docs.append(documento)
         print url
+
 
     count += 100
 
