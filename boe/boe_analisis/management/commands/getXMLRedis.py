@@ -138,14 +138,14 @@ def fillDocumentXMLData(url_xml_Input, documento):
 
         codigo = metadatos.origen_legislativo.get('codigo')
         titulo = metadatos.origen_legislativo.text
-        origen = get_or_create(Origen_legislativo, codigo=codigo, titulo=titulo)[0]
+        origen = get_or_create(Origen_legislativo, codigo=codigo, titulo=titulo)
         documento.origen_legislativo = origen
     if hasattr(metadatos, 'estado_consolidacion'):
         est =  metadatos.estado_consolidacion
         estado_codigo = est.get('codigo')
         estado_texto = est.text
         if estado_codigo != '' and estado_texto:
-            estado = get_or_create(Estado_consolidacion, codigo=int(estado_codigo), titulo=estado_texto)[0]
+            estado = get_or_create(Estado_consolidacion, codigo=int(estado_codigo), titulo=estado_texto)
 
             documento.estado_consolidacion = estado
     if hasattr(metadatos, 'judicialmente_anulada'):
