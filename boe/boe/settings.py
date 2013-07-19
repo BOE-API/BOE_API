@@ -168,12 +168,12 @@ LOGGING = {
         },
     }
 }
-CACHES = {
-    'default': {
-        'BACKEND': 'redis_cache.cache.RedisCache',
-        'LOCATION': '23.22.118.200:6379:0',
-        "OPTIONS": {
-            "CLIENT_CLASS": "redis_cache.client.DefaultClient",
-        },
-    },
-}
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'redis_cache.cache.RedisCache',
+#         'LOCATION': '23.22.118.200:6379:0',
+#         "OPTIONS": {
+#             "CLIENT_CLASS": "redis_cache.client.DefaultClient",
+#         },
+#     },
+# }
