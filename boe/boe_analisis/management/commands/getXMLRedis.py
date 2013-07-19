@@ -71,11 +71,12 @@ def fillDocumentXMLData(url_xml_Input, documento):
     if hasattr(metadatos, 'titulo'):
         documento.titulo = metadatos.titulo.text
     if hasattr(metadatos, 'diario'):
-        diario = Diario()
+
+
         if metadatos.diario.get('codigo'):
-            diario.codigo = metadatos.diario.get('codigo')
-            diario.titulo = metadatos.diario.text
-            diario.save()
+            codigo = metadatos.diario.get('codigo')
+            titulo = metadatos.diario.text
+            diario = Diario.objects.get_or_create(codigo=codigo, titulo=titulo)[0]
             documento.diario = diario
     if hasattr(metadatos, 'diario_numero'):
         documento.diario_numero = metadatos.diario_numero.text
@@ -84,17 +85,17 @@ def fillDocumentXMLData(url_xml_Input, documento):
     if hasattr(metadatos, 'subseccion'):
         documento.subseccion = metadatos.subseccion.text
     if hasattr(metadatos, 'departamento'):
-        dept = Departamento()
+
         if metadatos.departamento.get('codigo'):
-            dept.codigo = metadatos.departamento.get('codigo')
-            dept.titulo = metadatos.departamento.text
-            dept.save()
+            codigo = metadatos.departamento.get('codigo')
+            titulo = metadatos.departamento.text
+            dept = Departamento.objects.get_or_create(codigo=codigo, titulo=titulo)[0]
             documento.departamento = dept
     if hasattr(metadatos, 'rango'):
-        rango = Rango()
-        rango.codigo = int(metadatos.rango.get('codigo'))
-        rango.titulo = metadatos.rango.text
-        rango.save()
+
+        codigo = int(metadatos.rango.get('codigo'))
+        titulo = metadatos.rango.text
+        rango = Rango.objects.get_or_create(codigo=codigo, titulo=titulo)[0]
         documento.rango = rango
     if hasattr(metadatos, 'numero_oficial'):
         documento.numero_oficial = metadatos.numero_oficial.text
@@ -102,7 +103,7 @@ def fillDocumentXMLData(url_xml_Input, documento):
         documento.fecha_disposicion = textToDate(metadatos.fecha_disposicion.text)
     if hasattr(metadatos, 'fecha_publicacion'):
         documento.fecha_publicacion = textToDate(metadatos.fecha_publicacion.text)
-        print  textToDate(metadatos.fecha_publicacion.text)
+        print textToDate(metadatos.fecha_publicacion.text)
     if hasattr(metadatos, 'fecha_vigencia'):
         documento.fecha_vigencia = textToDate(metadatos.fecha_vigencia.text)
     if hasattr(metadatos, 'fecha_derogacion'):
@@ -120,18 +121,18 @@ def fillDocumentXMLData(url_xml_Input, documento):
     if hasattr(metadatos, 'estatus_legislativo'):
         documento.estatus_legislativo = metadatos.estatus_legislativo.text
     if hasattr(metadatos, 'origen_legislativo'):
-        origen = Origen_legislativo()
-        origen.codigo = metadatos.origen_legislativo.get('codigo')
-        origen.titulo = metadatos.origen_legislativo.text
-        origen.save()
+
+        codigo = metadatos.origen_legislativo.get('codigo')
+        titulo = metadatos.origen_legislativo.text
+        origen = Origen_legislativo.objects.get_or_create(codigo=codigo, titulo=titulo)[0]
         documento.origen_legislativo = origen
     if hasattr(metadatos, 'estado_consolidacion'):
         est =  metadatos.estado_consolidacion
         estado_codigo = est.get('codigo')
         estado_texto = est.text
         if estado_codigo != '' and estado_texto:
-            estado = Estado_consolidacion(codigo=int(estado_codigo), titulo=estado_texto)
-            estado.save()
+            estado = Estado_consolidacion.objects.get_or_create(codigo=int(estado_codigo), titulo=estado_texto)[0]
+
             documento.estado_consolidacion = estado
     if hasattr(metadatos, 'judicialmente_anulada'):
         documento.judicialmente_anulada = SiNoToBool(metadatos.judicialmente_anulada.text)
@@ -153,7 +154,6 @@ def fillDocumentXMLData(url_xml_Input, documento):
     if hasattr(metadatos, 'url_pdf_valenciano'):
         documento.url_pdf_valenciano = metadatos.url_pdf_valenciano.text
     documento.save()
-
     notas = []
     if hasattr(rootXML.analisis, 'notas'):
         if hasattr(rootXML.analisis.notas, 'nota'):
@@ -161,18 +161,10 @@ def fillDocumentXMLData(url_xml_Input, documento):
             for nota in rootXML.analisis.notas.nota:
                 notaCodigo = nota.get('codigo')
                 notaTitulo = nota.text
-                n = Nota(codigo=notaCodigo, titulo=notaTitulo)
+                n = Nota.objects.get_or_create(codigo=notaCodigo, titulo=notaTitulo)[0]
+                notas.append(n)
                 print n.codigo
-                try:
-                    n.save()
-                    notas.append(n)
-                except:
-                    try:
-                        n = Nota.objects.get(codigo=nota['codigo'], titulo=nota['titulo'])
-                        n.save()
-                        notas.append(n)
-                    except:
-                        pass
+
 
 
     alertas = []
@@ -180,19 +172,18 @@ def fillDocumentXMLData(url_xml_Input, documento):
         if hasattr(rootXML.analisis.materias, 'materia'):
             materias = []
             for materia in rootXML.analisis.materias.materia:
-                mat = Materia()
-                mat.codigo = materia.get('codigo')
-                mat.titulo = materia.text
-                mat.save()
+                codigo = materia.get('codigo')
+                titulo = materia.text
+                mat = Materia.objects.get_or_create(codigo=codigo, titulo=titulo)[0]
                 materias.append(mat)
-            documento.materias =materias
+            documento.materias = materias
     if hasattr(rootXML.analisis, 'alertas'):
         if hasattr(rootXML.analisis.alertas, 'alerta'):
             for alerta in rootXML.analisis.alertas.alerta:
-                a = Alerta()
-                a.codigo = alerta.get('codigo')
-                a.titulo = alerta.text
-                a.save()
+                codigo = alerta.get('codigo')
+                titulo = alerta.text
+                a = Alerta.objects.get_or_create(codigo=codigo, titulo=titulo)[0]
+
                 alertas.append(a)
 
 
@@ -202,23 +193,14 @@ def fillDocumentXMLData(url_xml_Input, documento):
             for anterior in rootXML.analisis.referencias.anteriores.anterior:
 
                 referencia = anterior.get('referencia')
-                doc_ref = Documento(identificador=referencia)
-                doc_ref.save()
+                doc_ref = Documento.objects.get_or_create(identificador=referencia)
+
                 palabra_codigo = anterior.palabra.get('codigo')
                 palabra_texto = anterior.palabra.text
                 texto = anterior.texto.text
-                print doc_ref.identificador
-                palabra = Palabra(codigo = palabra_codigo, titulo=palabra_texto)
-                palabra.save()
-                ref = Referencia(referencia=doc_ref, palabra=palabra, texto=texto)
-                try:
-                    ref.save()
-                except:
-                    try:
-                        ref = Referencia.objects.get(referencia=doc_ref, palabra=palabra)
-                    except:
-                        pass
 
+                palabra = Palabra.objects.get_or_create(codigo = palabra_codigo, titulo=palabra_texto)
+                ref = Referencia.objects.get_or_create(referencia=doc_ref, palabra=palabra, texto=texto)
                 refAnteriores.append(ref)
             documento.referencias_anteriores = refAnteriores
     if hasattr(rootXML.analisis, 'posteriores'):
@@ -226,22 +208,12 @@ def fillDocumentXMLData(url_xml_Input, documento):
             refPosteriores = []
             for anterior in rootXML.analisis.referencias.posteriores.posterior:
                 referencia = anterior.get('referencia')
-                doc_ref = Documento(identificador=referencia)
-                doc_ref.save()
+                doc_ref = Documento.objects.get_or_create(identificador=referencia)
                 palabra_codigo = anterior.palabra.get('codigo')
                 palabra_texto = anterior.palabra.text
                 texto = anterior.texto.text
-                if texto:
-                    palabra = Palabra(codigo = palabra_codigo, titulo=palabra_texto)
-                    palabra.save()
-                    ref = Referencia(referencia=doc_ref, palabra=palabra, texto=texto)
-                    try:
-                        ref.save()
-                    except:
-                        try:
-                            ref = Referencia.objects.get(referencia=doc_ref, palabra=palabra)
-                        except:
-                            pass
+                palabra = Palabra.objects.get_or_create(codigo = palabra_codigo, titulo=palabra_texto)
+                ref = Referencia.objects.get_or_create(referencia=doc_ref, palabra=palabra, texto=texto)
                 refPosteriores.append(ref)
             documento.referencias_posteriores = refPosteriores
     if hasattr(rootXML, 'texto'):

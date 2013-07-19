@@ -14,7 +14,7 @@ from datetime import datetime
 from lxml import etree, objectify
 
 from pattern.web import URL
-
+from django.db import transaction
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
@@ -52,13 +52,11 @@ while count < max:
     test_ue = r.lrange(rango, count, count+100)
     r_count.set(rango, int(count+100))
     for url in test_ue:
-        try:
-            documento = Documento()
-            fillDocumentXMLData(url, documento)
-            print url
-        except:
-            print 'fallo en: ' + url
-            r.lpush('fallo_'+rango, url)
+
+        documento = Documento()
+        fillDocumentXMLData(url, documento)
+        print url
+
     count += 100
 
     print count
