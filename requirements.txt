@@ -16,4 +16,5 @@ pysolr
 pyzmq
 circus
 circus-web
+psycopg2
 django-redis-cache
