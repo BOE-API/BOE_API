@@ -51,9 +51,19 @@ def SiNoToBool(character):
 def get_or_create(model, **kwargs):
     objeto = None
     try:
-        objeto = model.objects.get(**kwargs)
+        if kwargs.has_key('busqueda'):
+            objeto = model.objects.get(**kwargs['busqueda'])
+        else:
+            objeto = model.objects.get(**kwargs)
     except:
-        objeto = model(**kwargs)
+        print kwargs
+        if kwargs.has_key('busqueda') and kwargs.has_key('insert'):
+            insert = dict(kwargs['busqueda'].items() + kwargs['insert'].items())
+            objeto = model(**insert)
+            print objeto
+        else:
+            objeto = model(**kwargs)
+
         objeto.save()
     return objeto
 
@@ -220,7 +230,9 @@ def fillDocumentXMLData(url_xml_Input, documento):
                 palabra_texto = anterior.palabra.text
                 texto = anterior.texto.text
                 palabra = get_or_create(Palabra,  codigo = palabra_codigo, titulo=palabra_texto)
-                ref = get_or_create(Referencia, referencia=doc_ref, palabra=palabra, texto=texto)
+                busqueda = dict(referencia=doc_ref, palabra=palabra)
+                insert =  dict(texto=texto)
+                ref = get_or_create(Referencia, busqueda=busqueda, insert=insert)
                 ref_ant.append(ref)
             documento.referencias_anteriores = ref_ant
     if hasattr(rootXML.analisis.referencias, 'posteriores'):
@@ -233,7 +245,10 @@ def fillDocumentXMLData(url_xml_Input, documento):
                 palabra_texto = anterior.palabra.text
                 texto = anterior.texto.text
                 palabra = get_or_create(Palabra,  codigo = palabra_codigo, titulo=palabra_texto)
-                ref = get_or_create(Referencia, referencia=doc_ref, palabra=palabra, texto=texto)
+                busqueda = dict(referencia=doc_ref, palabra=palabra)
+                insert =  dict(texto=texto)
+                ref = get_or_create(Referencia, busqueda=busqueda, insert=insert)
+
                 ref_post.append(ref)
             documento.referencias_posteriores =ref_post
     if hasattr(rootXML, 'texto'):
