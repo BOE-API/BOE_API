@@ -60,6 +60,8 @@ try:
             except etree.XMLSyntaxError, e:
                 pass
             except Exception, e:
+                print e
+                print 'FALLO'
                 r.lpush('fallo_'+rango, url)
 
             print url
