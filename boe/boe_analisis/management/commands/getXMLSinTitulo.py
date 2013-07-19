@@ -17,6 +17,7 @@ from pattern.web import URL
 from django.db import transaction
 import atexit
 from django.db import IntegrityError, transaction
+
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
@@ -49,11 +50,8 @@ test_ue = r.lrange(rango, count, count+100)
 # print test_ue
 
 
-while count < max:
-    print count
-    test_ue = r.lrange(rango, count, count+100)
-    r_count.set(rango, int(count+100))
-    # docs = []
+def process(test_ue):
+
     for url in test_ue:
         try:
             documento = Documento()
@@ -62,13 +60,23 @@ while count < max:
             pass
         except IntegrityError, e:
             print 'rollback  ' + url
-            transaction.rollback();
+            transaction.rollback_unless_managed()
+
 
         except Exception, e:
             print e
             print 'FALLO'
             print url
             r.lpush('fallo_'+rango, url)
+            pass
+
+while count < max:
+    print count
+    test_ue = r.lrange(rango, count, count+100)
+    r_count.set(rango, int(count+100))
+    # docs = []
+    process(test_ue)
+
 
 
 

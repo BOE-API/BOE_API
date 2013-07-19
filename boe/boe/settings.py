@@ -17,7 +17,7 @@ DATABASES = {
     'PORT': 5432,
     'USER': 'postgres',
     'PASSWORD': 'grissom',
-    'OPTIONS': {'autocommit': True,}
+    'OPTIONS': {'autocommit': False,}
   },
 
 }
