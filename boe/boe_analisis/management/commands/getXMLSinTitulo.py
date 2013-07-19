@@ -56,19 +56,20 @@ def process(test_ue):
         try:
             documento = Documento()
             fillDocumentXMLData(url, documento)
+            transaction.commit_on_success()
         except etree.XMLSyntaxError, e:
             pass
-        except IntegrityError, e:
-            print 'rollback  ' + url
-            transaction.rollback_unless_managed()
+        # except IntegrityError, e:
+        #     print 'rollback  ' + url
+        #     transaction.rollback_unless_managed()
 
 
-        except Exception, e:
-            print e
-            print 'FALLO'
-            print url
-            r.lpush('fallo_'+rango, url)
-            pass
+        # except Exception, e:
+        #     print e
+        #     print 'FALLO'
+        #     print url
+        #     r.lpush('fallo_'+rango, url)
+        #     pass
 
 while count < max:
     print count

@@ -17,7 +17,7 @@ DATABASES = {
     'PORT': 5432,
     'USER': 'postgres',
     'PASSWORD': 'grissom',
-    'OPTIONS': {'autocommit': False,}
+    # 'OPTIONS': {'autocommit': False,}
   },
 
 }
@@ -129,7 +129,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'haystack',
     'boe_analisis',
-    'south',
+    # 'south',
     # Uncomment the next line to enable the admin:
 
     # Uncomment the next line to enable admin documentation:

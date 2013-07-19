@@ -48,6 +48,15 @@ def SiNoToBool(character):
     return character == 'S'
 
 
+def get_or_create(model, **kwargs):
+    objeto = None
+    try:
+        objeto = model.objects.get(**kwargs)
+    except:
+        objeto = model(**kwargs)
+        objeto.save()
+    return objeto
+
 
 def fillDocumentXMLData(url_xml_Input, documento):
     """
@@ -64,8 +73,9 @@ def fillDocumentXMLData(url_xml_Input, documento):
 
     metadatos = rootXML.metadatos
     if hasattr(metadatos, 'identificador'):
-        documento.identificador = metadatos.identificador.text
-
+        identificador = metadatos.identificador.text
+        documento = Documento.objects.get_or_create(identificador=identificador)[0]
+        print documento
         documento.url_xml = url_a_pattern.format(metadatos.identificador.text)
         documento.url_htm = url_a_html_pattern.format(metadatos.identificador.text)
     else:
@@ -105,7 +115,7 @@ def fillDocumentXMLData(url_xml_Input, documento):
         documento.fecha_disposicion = textToDate(metadatos.fecha_disposicion.text)
     if hasattr(metadatos, 'fecha_publicacion'):
         documento.fecha_publicacion = textToDate(metadatos.fecha_publicacion.text)
-        print textToDate(metadatos.fecha_publicacion.text)
+        # print textToDate(metadatos.fecha_publicacion.text)
     if hasattr(metadatos, 'fecha_vigencia'):
         documento.fecha_vigencia = textToDate(metadatos.fecha_vigencia.text)
     if hasattr(metadatos, 'fecha_derogacion'):
@@ -155,76 +165,78 @@ def fillDocumentXMLData(url_xml_Input, documento):
         documento.url_pdf_gallego = metadatos.url_pdf_gallego.text
     if hasattr(metadatos, 'url_pdf_valenciano'):
         documento.url_pdf_valenciano = metadatos.url_pdf_valenciano.text
-    documento.save()
-    notas = []
+    print documento
+
     if hasattr(rootXML.analisis, 'notas'):
         if hasattr(rootXML.analisis.notas, 'nota'):
-
+            notas = []
             for nota in rootXML.analisis.notas.nota:
-                notaCodigo = nota.get('codigo')
-                notaTitulo = nota.text
-                n = Nota.objects.get_or_create(codigo=notaCodigo, titulo=notaTitulo)[0]
-                notas.append(n)
-                print n.codigo
+                codigo = nota.get('codigo')
+                titulo = nota.text
+                if codigo:
+                    n = get_or_create(Nota, codigo=codigo, titulo=titulo)
+                    notas.append(n)
+            documento.notas = notas;
 
 
 
-    alertas = []
+    # #
+    # #
     if hasattr(rootXML.analisis, 'materias'):
         if hasattr(rootXML.analisis.materias, 'materia'):
             materias = []
             for materia in rootXML.analisis.materias.materia:
                 codigo = materia.get('codigo')
                 titulo = materia.text
-                mat = Materia.objects.get_or_create(codigo=codigo, titulo=titulo)[0]
-                materias.append(mat)
+                if codigo:
+                    m =get_or_create(Materia, codigo=codigo, titulo=titulo)
+                    materias.append(m)
+
             documento.materias = materias
+
     if hasattr(rootXML.analisis, 'alertas'):
         if hasattr(rootXML.analisis.alertas, 'alerta'):
+            alertas = []
             for alerta in rootXML.analisis.alertas.alerta:
                 codigo = alerta.get('codigo')
                 titulo = alerta.text
-                a = Alerta.objects.get_or_create(codigo=codigo, titulo=titulo)[0]
 
-                alertas.append(a)
+                if codigo:
+                    a = get_or_create(Alerta, codigo=codigo, titulo=titulo)
+                    alertas.append(a)
 
+            documento.alertas = alertas
 
-    if hasattr(rootXML.analisis, 'anteriores'):
+    if hasattr(rootXML.analisis.referencias, 'anteriores'):
         if hasattr(rootXML.analisis.referencias.anteriores, 'anterior'):
-            refAnteriores = []
+            ref_ant = []
             for anterior in rootXML.analisis.referencias.anteriores.anterior:
 
                 referencia = anterior.get('referencia')
-                doc_ref = Documento.objects.get_or_create(identificador=referencia)
-
+                doc_ref = get_or_create(Documento, identificador=referencia)
                 palabra_codigo = anterior.palabra.get('codigo')
                 palabra_texto = anterior.palabra.text
                 texto = anterior.texto.text
-
-                palabra = Palabra.objects.get_or_create(codigo = palabra_codigo, titulo=palabra_texto)
-                ref = Referencia.objects.get_or_create(referencia=doc_ref, palabra=palabra, texto=texto)
-                refAnteriores.append(ref)
-            documento.referencias_anteriores = refAnteriores
-    if hasattr(rootXML.analisis, 'posteriores'):
+                palabra = get_or_create(Palabra,  codigo = palabra_codigo, titulo=palabra_texto)
+                ref = get_or_create(Referencia, referencia=doc_ref, palabra=palabra, texto=texto)
+                ref_ant.append(ref)
+            documento.referencias_anteriores = ref_ant
+    if hasattr(rootXML.analisis.referencias, 'posteriores'):
         if hasattr(rootXML.analisis.referencias.posteriores, 'posterior'):
-            refPosteriores = []
+            ref_post = []
             for anterior in rootXML.analisis.referencias.posteriores.posterior:
                 referencia = anterior.get('referencia')
-                doc_ref = Documento.objects.get_or_create(identificador=referencia)
+                doc_ref = get_or_create(Documento, identificador=referencia)
                 palabra_codigo = anterior.palabra.get('codigo')
                 palabra_texto = anterior.palabra.text
                 texto = anterior.texto.text
-                palabra = Palabra.objects.get_or_create(codigo = palabra_codigo, titulo=palabra_texto)
-                ref = Referencia.objects.get_or_create(referencia=doc_ref, palabra=palabra, texto=texto)
-                refPosteriores.append(ref)
-            documento.referencias_posteriores = refPosteriores
+                palabra = get_or_create(Palabra,  codigo = palabra_codigo, titulo=palabra_texto)
+                ref = get_or_create(Referencia, referencia=doc_ref, palabra=palabra, texto=texto)
+                ref_post.append(ref)
+            documento.referencias_posteriores =ref_post
     if hasattr(rootXML, 'texto'):
         textoString = etree.tostring(rootXML.texto, pretty_print=True)
         documento.texto = textoString
-    if notas:
-        documento.notas = notas
-    if alertas:
-        documento.alertas = alertas
 
     documento.save()
     return documento
