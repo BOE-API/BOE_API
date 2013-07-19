@@ -68,8 +68,8 @@ try:
         count += 100
 
         print count
-except KeyboardInterrupt:
-    r_count.set(rango, int(count))
+except:
+    r_count.set(rango, int(count-100))
 
 
 
