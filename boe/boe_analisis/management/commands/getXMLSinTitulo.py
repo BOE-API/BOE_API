@@ -60,13 +60,16 @@ try:
                 fillDocumentXMLData(url, documento)
             except etree.XMLSyntaxError, e:
                 pass
+            except IntegrityError, e:
+                print 'rollback  ' + url
+                transaction.rollback();
+
             except Exception, e:
                 print e
                 print 'FALLO'
+                print url
                 r.lpush('fallo_'+rango, url)
-            except IntegrityError, e:
-                transaction.rollback();
-            print url
+
 
 
         count += 100
