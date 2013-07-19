@@ -48,35 +48,34 @@ test_ue = r.lrange(rango, count, count+100)
 
 # print test_ue
 
-try:
-    while count < max:
-        print count
-        test_ue = r.lrange(rango, count, count+100)
-        r_count.set(rango, int(count+100))
-        # docs = []
-        for url in test_ue:
-            try:
-                documento = Documento()
-                fillDocumentXMLData(url, documento)
-            except etree.XMLSyntaxError, e:
-                pass
-            except IntegrityError, e:
-                print 'rollback  ' + url
-                transaction.rollback();
 
-            except Exception, e:
-                print e
-                print 'FALLO'
-                print url
-                r.lpush('fallo_'+rango, url)
+while count < max:
+    print count
+    test_ue = r.lrange(rango, count, count+100)
+    r_count.set(rango, int(count+100))
+    # docs = []
+    for url in test_ue:
+        try:
+            documento = Documento()
+            fillDocumentXMLData(url, documento)
+        except etree.XMLSyntaxError, e:
+            pass
+        except IntegrityError, e:
+            print 'rollback  ' + url
+            transaction.rollback();
+
+        except Exception, e:
+            print e
+            print 'FALLO'
+            print url
+            r.lpush('fallo_'+rango, url)
 
 
 
-        count += 100
+    count += 100
 
-        print count
-except:
-    r_count.set(rango, int(count-100))
+    print count
+
 
 
 
