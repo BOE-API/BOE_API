@@ -16,6 +16,7 @@ from lxml import etree, objectify
 from pattern.web import URL
 from django.db import transaction
 import atexit
+from django.db import IntegrityError, transaction
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
@@ -63,7 +64,8 @@ try:
                 print e
                 print 'FALLO'
                 r.lpush('fallo_'+rango, url)
-
+            except IntegrityError, e:
+                transaction.rollback();
             print url
 
 
