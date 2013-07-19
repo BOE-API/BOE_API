@@ -74,7 +74,7 @@ def fillDocumentXMLData(url_xml_Input, documento):
     metadatos = rootXML.metadatos
     if hasattr(metadatos, 'identificador'):
         identificador = metadatos.identificador.text
-        documento = Documento.objects.get_or_create(identificador=identificador)[0]
+        documento = get_or_create(Documento, identificador=identificador)
         print documento
         documento.url_xml = url_a_pattern.format(metadatos.identificador.text)
         documento.url_htm = url_a_html_pattern.format(metadatos.identificador.text)
@@ -102,14 +102,14 @@ def fillDocumentXMLData(url_xml_Input, documento):
             codigo = metadatos.departamento.get('codigo')
             titulo = metadatos.departamento.text
 
-            dept = get_or_create(Departamento,codigo=codigo, titulo=titulo)[0]
+            dept = get_or_create(Departamento,codigo=codigo, titulo=titulo)
             documento.departamento = dept
     if hasattr(metadatos, 'rango'):
 
         codigo = int(metadatos.rango.get('codigo'))
         titulo = metadatos.rango.text
 
-        rango = get_or_create(Rango,codigo=codigo, titulo=titulo)[0]
+        rango = get_or_create(Rango,codigo=codigo, titulo=titulo)
         documento.rango = rango
     if hasattr(metadatos, 'numero_oficial'):
         documento.numero_oficial = metadatos.numero_oficial.text
