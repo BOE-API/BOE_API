@@ -88,7 +88,7 @@ def fillDocumentXMLData(url_xml_Input, documento):
         if metadatos.diario.get('codigo'):
             codigo = metadatos.diario.get('codigo')
             titulo = metadatos.diario.text
-            diario = Diario.objects.get_or_create(codigo=codigo, titulo=titulo)[0]
+            diario = get_or_create(Diario,codigo=codigo, titulo=titulo)
             documento.diario = diario
     if hasattr(metadatos, 'diario_numero'):
         documento.diario_numero = metadatos.diario_numero.text
@@ -101,13 +101,15 @@ def fillDocumentXMLData(url_xml_Input, documento):
         if metadatos.departamento.get('codigo'):
             codigo = metadatos.departamento.get('codigo')
             titulo = metadatos.departamento.text
-            dept = Departamento.objects.get_or_create(codigo=codigo, titulo=titulo)[0]
+
+            dept = get_or_create(Departamento,codigo=codigo, titulo=titulo)[0]
             documento.departamento = dept
     if hasattr(metadatos, 'rango'):
 
         codigo = int(metadatos.rango.get('codigo'))
         titulo = metadatos.rango.text
-        rango = Rango.objects.get_or_create(codigo=codigo, titulo=titulo)[0]
+
+        rango = get_or_create(Rango,codigo=codigo, titulo=titulo)[0]
         documento.rango = rango
     if hasattr(metadatos, 'numero_oficial'):
         documento.numero_oficial = metadatos.numero_oficial.text
@@ -136,14 +138,14 @@ def fillDocumentXMLData(url_xml_Input, documento):
 
         codigo = metadatos.origen_legislativo.get('codigo')
         titulo = metadatos.origen_legislativo.text
-        origen = Origen_legislativo.objects.get_or_create(codigo=codigo, titulo=titulo)[0]
+        origen = get_or_create(Origen_legislativo, codigo=codigo, titulo=titulo)[0]
         documento.origen_legislativo = origen
     if hasattr(metadatos, 'estado_consolidacion'):
         est =  metadatos.estado_consolidacion
         estado_codigo = est.get('codigo')
         estado_texto = est.text
         if estado_codigo != '' and estado_texto:
-            estado = Estado_consolidacion.objects.get_or_create(codigo=int(estado_codigo), titulo=estado_texto)[0]
+            estado = get_or_create(Estado_consolidacion, codigo=int(estado_codigo), titulo=estado_texto)[0]
 
             documento.estado_consolidacion = estado
     if hasattr(metadatos, 'judicialmente_anulada'):
