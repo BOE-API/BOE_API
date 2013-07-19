@@ -16,7 +16,8 @@ DATABASES = {
     'HOST': '178.18.87.140',
     'PORT': 5432,
     'USER': 'postgres',
-    'PASSWORD': 'grissom'
+    'PASSWORD': 'grissom',
+    'OPTIONS': {'autocommit': True,}
   },
 
 }
