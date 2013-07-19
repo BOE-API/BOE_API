@@ -55,12 +55,13 @@ def fillDocumentXMLData(url_xml_Input, documento):
     :param url_xml_Input:
     :param documento:
     """
+    print url_xml_Input
     url_xml = URL(url_xml_Input)
     xmlDOC = url_xml.download()
-    try:
-        rootXML = objectify.fromstring(xmlDOC)
-    except:
-        return
+
+    rootXML = objectify.fromstring(xmlDOC)
+
+
     metadatos = rootXML.metadatos
     if hasattr(metadatos, 'identificador'):
         documento.identificador = metadatos.identificador.text

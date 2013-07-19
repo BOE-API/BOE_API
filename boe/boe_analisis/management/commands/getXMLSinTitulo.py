@@ -15,6 +15,7 @@ from lxml import etree, objectify
 
 from pattern.web import URL
 from django.db import transaction
+import atexit
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
@@ -46,25 +47,29 @@ test_ue = r.lrange(rango, count, count+100)
 
 # print test_ue
 
+try:
+    while count < max:
+        print count
+        test_ue = r.lrange(rango, count, count+100)
+        r_count.set(rango, int(count+100))
+        # docs = []
+        for url in test_ue:
+            try:
+                documento = Documento()
+                fillDocumentXMLData(url, documento)
+            except etree.XMLSyntaxError, e:
+                pass
+            except Exception, e:
+                r.lpush('fallo_'+rango, url)
 
-while count < max:
-    print count
-    test_ue = r.lrange(rango, count, count+100)
-    r_count.set(rango, int(count+100))
-    docs = []
-    for url in test_ue:
-
-        documento = Documento()
-        documento = fillDocumentXMLData(url, documento)
-
-        docs.append(documento)
-        print url
+            print url
 
 
-    count += 100
+        count += 100
 
-    print count
-
+        print count
+except KeyboardInterrupt:
+    r_count.set(rango, int(count))
 
 
 
