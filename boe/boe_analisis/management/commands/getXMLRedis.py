@@ -218,39 +218,40 @@ def fillDocumentXMLData(url_xml_Input, documento):
                     alertas.append(a)
 
             documento.alertas = alertas
+    if hasattr(rootXML.analisis, 'referencias'):
+        if hasattr(rootXML.analisis.referencias, 'anteriores'):
+            if hasattr(rootXML.analisis.referencias.anteriores, 'anterior'):
+                ref_ant = []
+                for anterior in rootXML.analisis.referencias.anteriores.anterior:
 
-    if hasattr(rootXML.analisis.referencias, 'anteriores'):
-        if hasattr(rootXML.analisis.referencias.anteriores, 'anterior'):
-            ref_ant = []
-            for anterior in rootXML.analisis.referencias.anteriores.anterior:
+                    referencia = anterior.get('referencia')
+                    doc_ref = get_or_create(Documento, identificador=referencia)
+                    palabra_codigo = anterior.palabra.get('codigo')
+                    palabra_texto = anterior.palabra.text
+                    texto = anterior.texto.text
+                    palabra = get_or_create(Palabra,  codigo = palabra_codigo, titulo=palabra_texto)
+                    busqueda = dict(referencia=doc_ref, palabra=palabra)
+                    insert =  dict(texto=texto)
+                    ref = get_or_create(Referencia, busqueda=busqueda, insert=insert)
+                    ref_ant.append(ref)
+                documento.referencias_anteriores = ref_ant
 
-                referencia = anterior.get('referencia')
-                doc_ref = get_or_create(Documento, identificador=referencia)
-                palabra_codigo = anterior.palabra.get('codigo')
-                palabra_texto = anterior.palabra.text
-                texto = anterior.texto.text
-                palabra = get_or_create(Palabra,  codigo = palabra_codigo, titulo=palabra_texto)
-                busqueda = dict(referencia=doc_ref, palabra=palabra)
-                insert =  dict(texto=texto)
-                ref = get_or_create(Referencia, busqueda=busqueda, insert=insert)
-                ref_ant.append(ref)
-            documento.referencias_anteriores = ref_ant
-    if hasattr(rootXML.analisis.referencias, 'posteriores'):
-        if hasattr(rootXML.analisis.referencias.posteriores, 'posterior'):
-            ref_post = []
-            for anterior in rootXML.analisis.referencias.posteriores.posterior:
-                referencia = anterior.get('referencia')
-                doc_ref = get_or_create(Documento, identificador=referencia)
-                palabra_codigo = anterior.palabra.get('codigo')
-                palabra_texto = anterior.palabra.text
-                texto = anterior.texto.text
-                palabra = get_or_create(Palabra,  codigo = palabra_codigo, titulo=palabra_texto)
-                busqueda = dict(referencia=doc_ref, palabra=palabra)
-                insert =  dict(texto=texto)
-                ref = get_or_create(Referencia, busqueda=busqueda, insert=insert)
+        if hasattr(rootXML.analisis.referencias, 'posteriores'):
+            if hasattr(rootXML.analisis.referencias.posteriores, 'posterior'):
+                ref_post = []
+                for anterior in rootXML.analisis.referencias.posteriores.posterior:
+                    referencia = anterior.get('referencia')
+                    doc_ref = get_or_create(Documento, identificador=referencia)
+                    palabra_codigo = anterior.palabra.get('codigo')
+                    palabra_texto = anterior.palabra.text
+                    texto = anterior.texto.text
+                    palabra = get_or_create(Palabra,  codigo = palabra_codigo, titulo=palabra_texto)
+                    busqueda = dict(referencia=doc_ref, palabra=palabra)
+                    insert =  dict(texto=texto)
+                    ref = get_or_create(Referencia, busqueda=busqueda, insert=insert)
 
-                ref_post.append(ref)
-            documento.referencias_posteriores =ref_post
+                    ref_post.append(ref)
+                documento.referencias_posteriores =ref_post
     if hasattr(rootXML, 'texto'):
         textoString = etree.tostring(rootXML.texto, pretty_print=True)
         documento.texto = textoString
