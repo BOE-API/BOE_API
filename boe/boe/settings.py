@@ -13,10 +13,10 @@ DATABASES = {
   'default': {
     'ENGINE': 'django.db.backends.postgresql_psycopg2',
     'NAME': 'boe',
-    'HOST': '178.18.87.140',
+    'HOST': '198.199.125.192',
     'PORT': 5432,
     'USER': 'postgres',
-    'PASSWORD': 'grissom',
+    'PASSWORD': 'tesa2,mujir',
     # 'OPTIONS': {'autocommit': False,}
   },
 
@@ -129,7 +129,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'haystack',
     'boe_analisis',
-    # 'south',
+    'south',
     # Uncomment the next line to enable the admin:
 
     # Uncomment the next line to enable admin documentation:
