@@ -81,7 +81,7 @@ while count < max:
 
 
 
-    count += 100
+    count = r_count.get(rango)
 
     print count
 
