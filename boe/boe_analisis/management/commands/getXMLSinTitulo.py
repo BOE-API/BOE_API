@@ -59,17 +59,18 @@ def process(test_ue):
             transaction.commit_on_success()
         except etree.XMLSyntaxError, e:
             pass
-        # except IntegrityError, e:
-        #     print 'rollback  ' + url
-        #     transaction.rollback_unless_managed()
+        except IntegrityError, e:
+            # print 'rollback  ' + url
+            # transaction.rollback_unless_managed()
+            r.lpush('fallo_'+rango, url)
 
 
-        # except Exception, e:
-        #     print e
-        #     print 'FALLO'
-        #     print url
-        #     r.lpush('fallo_'+rango, url)
-        #     pass
+        except Exception, e:
+            print e
+            print 'FALLO'
+            print url
+            r.lpush('fallo_'+rango, url)
+            pass
 
 while count < max:
     print count
