@@ -60,7 +60,8 @@ def process(test_ue):
                                                                    Q(referencias_posteriores=None) |
                                                                    Q(notas=None) |
                                                                    Q(alertas=None) |
-                                                                   Q(materias=None)).exists():
+                                                                   Q(materias=None) |
+                                                                   Q(texto=None)).exists():
                 print url
                 documento = Documento()
                 fillDocumentXMLData(url, documento)
