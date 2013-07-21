@@ -5,43 +5,43 @@ import datetime
 
 class Diario(models.Model):
     codigo = models.CharField(max_length=10, primary_key=True)
-    titulo = models.CharField(max_length=200, null=True)
+    titulo = models.CharField(max_length=400, null=True)
 
 class Departamento(models.Model):
     codigo = models.CharField(max_length=10, primary_key=True)
-    titulo = models.CharField(max_length=800, null=True)
+    titulo = models.CharField(max_length=4000, null=True)
 
 class Rango(models.Model):
     codigo = models.IntegerField(primary_key=True)
-    titulo = models.CharField(max_length=800, null=True )
+    titulo = models.CharField(max_length=4000, null=True )
 
 class Origen_legislativo(models.Model):
     codigo = models.IntegerField(primary_key=True)
-    titulo = models.CharField(max_length=800, null=True)
+    titulo = models.CharField(max_length=4000, null=True)
 
 class Estado_consolidacion(models.Model):
     codigo = models.IntegerField(primary_key=True)
-    titulo = models.CharField(max_length=800, null=True)
+    titulo = models.CharField(max_length=4000, null=True)
 
 class Nota(models.Model):
     codigo = models.IntegerField()
-    titulo = models.CharField(max_length=800, null=True)
+    titulo = models.CharField(max_length=4000, null=True)
 
     class Meta:
         unique_together = (('codigo', 'titulo'),)
 
 class Materia(models.Model):
     codigo = models.IntegerField(primary_key=True)
-    titulo = models.CharField(max_length=800, null=True)
+    titulo = models.CharField(max_length=4000, null=True)
 
 
 class Alerta(models.Model):
     codigo = models.IntegerField(primary_key=True)
-    titulo = models.CharField(max_length=800, null=True)
+    titulo = models.CharField(max_length=4000, null=True)
 
 class Palabra(models.Model):
     codigo = models.IntegerField(primary_key=True)
-    titulo = models.CharField(max_length=800, null=True)
+    titulo = models.CharField(max_length=4000, null=True)
 
 class Referencia(models.Model):
     referencia = models.ForeignKey('Documento')
