@@ -138,7 +138,7 @@ INSTALLED_APPS = (
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
-        'URL': 'http://23.22.172.192:8983/solr'
+        'URL': 'http://185.14.184.132:8080/solr'
     },
 }
 # A sample logging configuration. The only tangible logging
