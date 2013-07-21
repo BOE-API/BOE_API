@@ -78,7 +78,7 @@ def process(test_ue):
 
 
 
-f = file('/Users/Carlos/Dropbox/proyectos/boe_crawler_django/boe/fallos.txt', 'r')
+f = file('fallos.txt', 'r')
 
 
 for l in f.readlines():
