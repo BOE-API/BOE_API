@@ -68,7 +68,7 @@ class Legislatura(models.Model):
 class Documento(models.Model):
 
     identificador = models.CharField(max_length=25, db_index=True, unique=True)
-    titulo = models.CharField(null=True, max_length=1500, default='', db_index=True)
+    titulo = models.CharField(null=True, max_length=4000, default='', db_index=True)
     diario = models.ForeignKey(Diario, null=True)
     diario_numero = models.IntegerField(null=True)
     seccion = models.CharField(max_length=50, null=True, default='')
