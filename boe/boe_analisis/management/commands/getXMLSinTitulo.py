@@ -48,7 +48,7 @@ max = r.llen(rango)
 test_ue = r.lrange(rango, count, count+100)
 
 # print test_ue
-f = file('fallos.txt', 'w+')
+f = file('fallos.txt', 'a')
 
 def process(test_ue):
 
@@ -72,7 +72,7 @@ def process(test_ue):
             print 'FALLO'
             print url
             f.write(url)
-            f.write(e)
+            f.(e)
 
 
 while count < max:
