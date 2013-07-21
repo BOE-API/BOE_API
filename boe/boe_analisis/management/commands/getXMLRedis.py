@@ -33,7 +33,7 @@ count = 0;
 regex = re.compile("(\d{4})(\d{2})(\d{2})")
 def textToDate(texto):
     global regex
-    print texto
+    # print texto
     if texto is not None:
         match = re.match(regex, texto)
         if match != None:
@@ -74,7 +74,7 @@ def fillDocumentXMLData(url_xml_Input, documento):
     :param url_xml_Input:
     :param documento:
     """
-    print url_xml_Input
+    # print url_xml_Input
     url_xml = URL(url_xml_Input)
     xmlDOC = url_xml.download()
 
@@ -85,7 +85,7 @@ def fillDocumentXMLData(url_xml_Input, documento):
     if hasattr(metadatos, 'identificador'):
         identificador = metadatos.identificador.text
         documento = get_or_create(Documento, identificador=identificador)
-        print documento
+        # print documento
         documento.url_xml = url_a_pattern.format(metadatos.identificador.text)
         documento.url_htm = url_a_html_pattern.format(metadatos.identificador.text)
     else:
@@ -177,7 +177,7 @@ def fillDocumentXMLData(url_xml_Input, documento):
         documento.url_pdf_gallego = metadatos.url_pdf_gallego.text
     if hasattr(metadatos, 'url_pdf_valenciano'):
         documento.url_pdf_valenciano = metadatos.url_pdf_valenciano.text
-    print documento
+    # print documento
 
     if hasattr(rootXML.analisis, 'notas'):
         if hasattr(rootXML.analisis.notas, 'nota'):

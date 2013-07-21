@@ -31,63 +31,77 @@ url_a_html_pattern = "http://www.boe.es/diario_boe/txt.php?id={0}"
 r_count = redis.StrictRedis(host='crawler1', port=6379, db=0)
 r = redis.StrictRedis(host='redis', port=6379, db=0)
 
+#
+# if (len(sys.argv) >= 3):
+#     rango =  sys.argv[2]
+#
+# else:
+#     print 'manda un argumento'
+#     sys.exit()
+#
+# if len(sys.argv) >=4:
+#     count = int(sys.argv[3])
+# else:
+#     count = int(r_count.get(rango))
+# max = r.llen(rango)
+#
+# test_ue = r.lrange(rango, count, count+100)
+#
+# # print test_ue
+# f = file('fallos.txt', 'a')
 
-if (len(sys.argv) >= 3):
-    rango =  sys.argv[2]
+def processURL(url):
+    try:
+        if not Documento.objects.filter(url_xml=url).exclude(Q(titulo=None) |
+                Q(referencias_anteriores=None) |
+                Q(referencias_posteriores=None) |
+                Q(notas=None) |
+                Q(alertas=None) |
+                Q(materias=None) |
+                Q(texto=None)).exists():
+            print 'PROCESA ' + url
+            documento = Documento()
+            fillDocumentXMLData(url, documento)
+            transaction.commit_on_success()
 
-else:
-    print 'manda un argumento'
-    sys.exit()
+    except Exception, e:
+        print e
+        print 'FALLO'
+        print url
 
-if len(sys.argv) >=4:
-    count = int(sys.argv[3])
-else:
-    count = int(r_count.get(rango))
-max = r.llen(rango)
-
-test_ue = r.lrange(rango, count, count+100)
-
-# print test_ue
-f = file('fallos.txt', 'a')
 
 def process(test_ue):
 
     for url in test_ue:
         print 'OUT ' + url
-        try:
-            if not Documento.objects.filter(url_xml = url).exclude(Q(titulo = None) |
-                                                                   Q(referencias_anteriores=None) |
-                                                                   Q(referencias_posteriores=None) |
-                                                                   Q(notas=None) |
-                                                                   Q(alertas=None) |
-                                                                   Q(materias=None) |
-                                                                   Q(texto=None)).exists():
-                print url
-                documento = Documento()
-                fillDocumentXMLData(url, documento)
-                transaction.commit_on_success()
-
-        except Exception, e:
-            print e
-            print 'FALLO'
-            print url
-            f.write(url)
-            f.write(e)
+        processURL(url)
 
 
-while count < max:
-    print count
-    test_ue = r.lrange(rango, count, count+100)
-    r_count.set(rango, int(count+100))
-    # docs = []
-    process(test_ue)
+
+f = file('/Users/Carlos/Dropbox/proyectos/boe_crawler_django/boe/fallos.txt', 'r')
+
+
+for l in f.readlines():
+    l = re.sub('\n', '', l)
+    print l
+    processURL(l)
 
 
 
 
-    count = int(r_count.get(rango))
-
-    print count
+# while count < max:
+#     print count
+#     test_ue = r.lrange(rango, count, count+100)
+#     r_count.set(rango, int(count+100))
+#     # docs = []
+#     process(test_ue)
+#
+#
+#
+#
+#     count = int(r_count.get(rango))
+#
+#     print count
 
 
 
