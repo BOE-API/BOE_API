@@ -72,7 +72,7 @@ def process(test_ue):
             print 'FALLO'
             print url
             f.write(url)
-            f.(e)
+            f.write(e)
 
 
 while count < max:
