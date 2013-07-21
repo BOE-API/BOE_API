@@ -3,7 +3,6 @@ from boe_analisis.models import Documento
 from boe_analisis.models import *
 import pdb
 
-pdb.set_trace()
 # class JobIndex(indexes.SearchIndex, indexes.Indexable):
 #     identificador = indexes.CharField(model_attr='identificador', null=True)
 #     text = indexes.CharField(document=True, use_template=True, model_attr='texto')
