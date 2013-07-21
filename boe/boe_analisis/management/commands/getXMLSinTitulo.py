@@ -53,21 +53,18 @@ f = file('fallos.txt', 'w+')
 def process(test_ue):
 
     for url in test_ue:
+        print 'OUT ' + url
         try:
-            if not Documento.objects.filter(url_xml = url).exclude(titulo = None, ).exists():
+            if not Documento.objects.filter(url_xml = url).exclude(Q(titulo = None) |
+                                                                   Q(referencias_anteriores=None) |
+                                                                   Q(referencias_posteriores=None) |
+                                                                   Q(notas=None) |
+                                                                   Q(alertas=None) |
+                                                                   Q(materias=None)).exists():
                 print url
                 documento = Documento()
                 fillDocumentXMLData(url, documento)
                 transaction.commit_on_success()
-        except etree.XMLSyntaxError, e:
-            pass
-        except IntegrityError, e:
-            # print 'rollback  ' + url
-            # transaction.rollback_unless_managed()
-            f.write(url)
-            f.write(e)
-
-
 
         except Exception, e:
             print e
@@ -75,7 +72,7 @@ def process(test_ue):
             print url
             f.write(url)
             f.write(e)
-            pass
+
 
 while count < max:
     print count
@@ -87,7 +84,7 @@ while count < max:
 
 
 
-    count = r_count.get(rango)
+    count = int(r_count.get(rango))
 
     print count
 
