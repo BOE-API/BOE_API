@@ -48,28 +48,33 @@ max = r.llen(rango)
 test_ue = r.lrange(rango, count, count+100)
 
 # print test_ue
-
+f = file('fallos.txt', 'w+')
 
 def process(test_ue):
 
     for url in test_ue:
         try:
-            documento = Documento()
-            fillDocumentXMLData(url, documento)
-            transaction.commit_on_success()
+            if not Documento.objects.filter(url_xml = url).exclude(titulo = None, ).exists():
+                print url
+                documento = Documento()
+                fillDocumentXMLData(url, documento)
+                transaction.commit_on_success()
         except etree.XMLSyntaxError, e:
             pass
         except IntegrityError, e:
             # print 'rollback  ' + url
             # transaction.rollback_unless_managed()
-            r.lpush('fallo_'+rango, url)
+            f.write(url)
+            f.write(e)
+
 
 
         except Exception, e:
             print e
             print 'FALLO'
             print url
-            r.lpush('fallo_'+rango, url)
+            f.write(url)
+            f.write(e)
             pass
 
 while count < max:
