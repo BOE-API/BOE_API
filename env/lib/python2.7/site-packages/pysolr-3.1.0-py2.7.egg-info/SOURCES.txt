@@ -1,0 +1,11 @@
+LICENSE
+MANIFEST.in
+README.rst
+pysolr.py
+setup.cfg
+setup.py
+pysolr.egg-info/PKG-INFO
+pysolr.egg-info/SOURCES.txt
+pysolr.egg-info/dependency_links.txt
+pysolr.egg-info/requires.txt
+pysolr.egg-info/top_level.txt

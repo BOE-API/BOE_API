@@ -1,0 +1,4 @@
+
+      [console_scripts]
+      circushttpd = circusweb.circushttpd:main
+      

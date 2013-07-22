@@ -1,0 +1,8 @@
+
+      [console_scripts]
+      circusd = circus.circusd:main
+      circusd-stats = circus.stats:main
+      circusctl = circus.circusctl:main
+      circus-top = circus.stats.client:main
+      circus-plugin = circus.plugins:main
+      

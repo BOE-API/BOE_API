@@ -1,0 +1,19 @@
+Metadata-Version: 1.0
+Name: gevent-socketio
+Version: 0.3.5-rc2
+Summary: SocketIO server based on the Gevent pywsgi server, a Python network library
+Home-page: https://github.com/abourget/gevent-socketio
+Author: Alexandre Bourget
+Author-email: alex@bourget.cc
+License: BSD
+Download-URL: https://github.com/abourget/gevent-socketio
+Description: UNKNOWN
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Programming Language :: Python
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: POSIX
+Classifier: Topic :: Internet
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Intended Audience :: Developers

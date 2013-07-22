@@ -1,0 +1,19 @@
+Metadata-Version: 1.0
+Name: django-redis-cache
+Version: 0.10.0
+Summary: Redis Cache Backend for Django
+Home-page: http://github.com/sebleier/django-redis-cache/
+Author: Sean Bleier
+Author-email: sebleier@gmail.com
+License: UNKNOWN
+Description: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 2.6
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3.3
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Utilities
+Classifier: Environment :: Web Environment
+Classifier: Framework :: Django

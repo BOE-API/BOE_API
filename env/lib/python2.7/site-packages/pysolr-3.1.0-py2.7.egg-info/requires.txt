@@ -1,0 +1,5 @@
+requests>=1.1.0
+
+[tomcat]
+lxml>=3.0
+cssselect

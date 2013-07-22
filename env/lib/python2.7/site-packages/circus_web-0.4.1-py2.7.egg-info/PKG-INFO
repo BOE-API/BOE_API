@@ -1,0 +1,21 @@
+Metadata-Version: 1.0
+Name: circus-web
+Version: 0.4.1
+Summary: Circus Web Dashboard
+Home-page: UNKNOWN
+Author: Mozilla Foundation & contributors
+Author-email: services-dev@lists.mozila.org
+License: UNKNOWN
+Description: ==========
+        circus-web
+        ==========
+        
+        Circus Web Dashboard.
+        
+        Find the full documentation at : http://circus.readthedocs.org/en/latest/circushttpd/
+Platform: UNKNOWN
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 2.6
+Classifier: Programming Language :: Python :: 2.7
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Development Status :: 3 - Alpha

@@ -1,0 +1,11 @@
+Mako
+MarkupSafe
+bottle
+anyjson
+gevent-socketio
+gevent-websocket
+greenlet
+beaker
+pyzmq
+circus
+gevent

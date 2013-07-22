@@ -1,0 +1,55 @@
+from circus.commands.base import Command
+
+
+class Stop(Command):
+    """\
+        Stop the arbiter or a watcher
+        =============================
+
+        This command stop all the process in a watcher or all watchers.
+
+        ZMQ Message
+        -----------
+
+        ::
+
+            {
+                "command": "stop",
+                "propeties": {
+                    "name": '<name>",
+                }
+            }
+
+        The response return the status "ok".
+
+        If the property name is present, then the stop will be applied
+        to the watcher.
+
+
+        Command line
+        ------------
+
+        ::
+
+            $ circusctl stop [<name>]
+
+        Options
+        +++++++
+
+        - <name>: name of the watcher
+
+    """
+
+    name = "stop"
+
+    def message(self, *args, **opts):
+        if len(args) >= 1:
+            return self.make_message(name=args[0])
+        return self.make_message()
+
+    def execute(self, arbiter, props):
+        if 'name' in props:
+            watcher = self._get_watcher(arbiter, props['name'])
+            watcher.stop()
+        else:
+            arbiter.stop_watchers()
