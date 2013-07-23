@@ -61,7 +61,7 @@ MEDIA_URL = ''
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
-STATIC_ROOT = '/Users/Carlos/Dropbox/proyectos/boe_crawler_django/boe/static'
+STATIC_ROOT = '/root/boe_django/boe/static'
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
@@ -72,9 +72,9 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    ('img', '/Users/Carlos/Dropbox/proyectos/boe_crawler_django/boe/static/img'),
-    ('css', '/Users/Carlos/Dropbox/proyectos/boe_crawler_django/boe/static/css'),
-    ('js', '/Users/Carlos/Dropbox/proyectos/boe_crawler_django/boe/static/js'),
+    ('img', '/root/boe_django/boe/static/img'),
+    ('css', '/root/boe_django/boe/static/css'),
+    ('js', '/root/boe_django/boe/static/js'),
 
 
 )
@@ -119,7 +119,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    '/Users/Carlos/Dropbox/proyectos/boe_crawler_django/boe/templates',
+    '/root/boe_django/boe/static/templates',
 )
 
 INSTALLED_APPS = (
