@@ -14,10 +14,10 @@ from django.core.cache import cache
 from django.views.decorators.cache import cache_page
 
 
-# @cache_page(60 * 15)
+
 def home(request):
 
-    documents = Documento.objects.exclude(titulo = None).filter(diario__codigo='BORME').values('titulo', 'identificador', 'fecha_publicacion')
+    documents = Documento.objects.exclude(titulo = None).filter(diario__codigo='BORME')
     paginator = Paginator(documents, 25)
     print paginator.count
     page = request.GET.get('page')
@@ -32,7 +32,7 @@ def home(request):
     context = {'lista_docs': lista_docs}
     return render_to_response('boe_analisis/index.html', context)
 
-# @cache_page(60 * 15)
+
 def individual(request, identificador):
 
     doc = Documento.objects.get(identificador = identificador)
@@ -40,7 +40,7 @@ def individual(request, identificador):
     return render(request, 'boe_analisis/individual.html', context)
 
 
-# @cache_page(60 * 15)
+
 def listado_materias(request):
     doc = Materia.objects.all()
     paginator = Paginator(doc, 100)
@@ -58,7 +58,7 @@ def listado_materias(request):
 
 
 
-@cache_page(60 * 15)
+
 def materias(request, materia):
 
     mat = Documento.objects.filter(materias__codigo = materia)

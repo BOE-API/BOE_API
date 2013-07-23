@@ -109,3 +109,7 @@ class Documento(models.Model):
 
     def __unicode__(self):
         return self.identificador
+
+    def get_absolute_url(self):
+        from django.core.urlresolvers import reverse
+        return reverse('individual_doc', args=[str(self.identificador)])
