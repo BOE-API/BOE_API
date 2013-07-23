@@ -1,0 +1,9 @@
+#!/Users/Carlos/Dropbox/proyectos/boe_crawler_django/env/bin/python
+# EASY-INSTALL-ENTRY-SCRIPT: 'circus-web==0.4.1','console_scripts','circushttpd'
+__requires__ = 'circus-web==0.4.1'
+import sys
+from pkg_resources import load_entry_point
+
+sys.exit(
+   load_entry_point('circus-web==0.4.1', 'console_scripts', 'circushttpd')()
+)

@@ -1,0 +1,24 @@
+#!/Users/Carlos/Dropbox/proyectos/boe_crawler_django/env/bin/python
+# -*- coding: utf-8 -*-
+#
+# Copyright (C) 2011 Loic Jaquemet loic.jaquemet+python@gmail.com
+#
+
+__author__ = "Loic Jaquemet loic.jaquemet+python@gmail.com"
+
+__doc__ = '''
+  Find a C Struct in process memory.
+
+'''
+
+import os, sys
+
+if __name__ == "__main__":
+  #debug
+  sys.path.insert(0,os.getcwd())
+  sys.path.insert(0,os.path.join(os.getcwd(),'haystack'))
+  from haystack import gui
+  from haystack.gui import gui
+  gui.main(sys.argv[1:])
+
+

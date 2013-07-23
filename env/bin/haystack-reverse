@@ -1,0 +1,118 @@
+#!/Users/Carlos/Dropbox/proyectos/boe_crawler_django/env/bin/python
+# -*- coding: utf-8 -*-
+#
+# Copyright (C) 2011 Loic Jaquemet loic.jaquemet+python@gmail.com
+#
+
+__author__ = "Loic Jaquemet loic.jaquemet+python@gmail.com"
+
+__doc__ = '''
+  Reverse heap analysis.
+'''
+
+import argparse
+import logging
+import os
+import sys
+
+import haystack
+from haystack import argparse_utils
+from haystack.config import Config
+from haystack.reverse import signature, reversers
+
+log = logging.getLogger('haystack-reverse')
+
+def reverseInstances(opt):
+  context = reversers.reverseInstances(opt.dumpname)
+  return
+
+def writeReversedTypes(opt):
+  '''reverse types from a memorydump, and write structure definition to file '''
+  context, sizeCache = signature.makeSizeCaches(opt.dumpname)  
+  context = signature.makeReversedTypes(context, sizeCache)
+  outfile = file(Config.getCacheFilename(Config.REVERSED_TYPES_FILENAME, context.dumpname),'w')
+  for revStructType in context.listReversedTypes():
+    outfile.write(revStructType.toString())
+  outfile.close()
+  log.info('[+] Wrote to %s'%(outfile.name))
+  return 
+
+def showStructures(opt):
+  ''' show sorted structure instances groups to stdout '''
+  context, sizeCache = signature.makeSizeCaches(opt.dumpname)  
+  for chains in signature.buildStructureGroup(context, sizeCache, opt.size ):
+    signature.printStructureGroups(context, chains, opt.originAddr )
+  return
+  
+def saveSignatures(opt):
+  ''' translate a memdump into a signature based file '''
+  context, sig = signature.makeSignatures(opt.dumpname)
+  outfile = Config.getCacheFilename(Config.SIGNATURES_FILENAME, context.dumpname)
+  file(outfile,'w').write(sig)
+  log.info('[+] Signature written to %s'%(outfile))
+  return
+
+  
+def argparser():
+  rootparser = argparse.ArgumentParser(prog='haystack-reverser', 
+    description='Several tools to reverse engineer structures on the heap.')
+  subparsers = rootparser.add_subparsers(help='sub-command help')
+
+  instances = subparsers.add_parser('instances', 
+    help='Reverse and list structures instances with virtual address and member types.')
+  instances.set_defaults(func=reverseInstances)  
+
+  typemap = subparsers.add_parser('typemap', 
+        help='Reverse and list of structure types.')
+  typemap.set_defaults(func=writeReversedTypes)  
+
+  show = subparsers.add_parser('show', help='Show sorted structure instances groups by size and signature')
+  show.add_argument('--size', type=int, action='store', default=None, 
+        help='Limit to a specific structure size')
+  show.add_argument('--originAddr', type=str, action='store', default=None, 
+        help='Limit to structure similar to the structure pointed at originAddr')
+  show.set_defaults(func=showStructures)  
+
+  #oldies
+  makesig = subparsers.add_parser('makesig', help='make signatures for dumpname')
+  makesig.set_defaults(func=saveSignatures)  
+
+  rootparser.add_argument('--debug', action='store_true', help='Debug mode on.')
+  rootparser.add_argument('dumpname', type=argparse_utils.readable, action='store', help='Source memory dump by haystack.')
+
+
+  return rootparser
+
+def main(argv):
+
+  parser = argparser()
+  opts = parser.parse_args(argv)
+
+  level=logging.WARNING
+  if opts.debug :
+    level=logging.DEBUG
+    flog = os.path.sep.join([Config.cacheDir,'log'])
+    logging.basicConfig(level=level, filename=flog, filemode='w')
+    logging.getLogger('haystack-reverse').setLevel(logging.DEBUG)
+    logging.getLogger('signature').setLevel(logging.DEBUG)
+    logging.getLogger('reversers').setLevel(logging.DEBUG)
+    logging.getLogger().debug('[+] **** COMPLETE debug log to %s'%(flog))    
+  else:
+    logging.getLogger('haystack-reverse').setLevel(logging.INFO)
+    logging.getLogger('signature').setLevel(logging.INFO)
+    logging.getLogger('reversers').setLevel(logging.INFO)
+  sh=logging.StreamHandler(stream=sys.stdout)
+  logging.getLogger('signature').addHandler( sh )
+  logging.getLogger('reversers').addHandler( sh )
+  logging.getLogger('haystack-reverse').addHandler( sh )
+
+  opts.func(opts)
+  
+
+
+
+if __name__ == "__main__":
+  sys.path.append(os.getcwd())
+  main(sys.argv[1:])
+
+

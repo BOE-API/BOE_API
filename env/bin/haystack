@@ -1,0 +1,21 @@
+#!/Users/Carlos/Dropbox/proyectos/boe_crawler_django/env/bin/python
+# -*- coding: utf-8 -*-
+#
+# Copyright (C) 2011 Loic Jaquemet loic.jaquemet+python@gmail.com
+#
+
+__author__ = "Loic Jaquemet loic.jaquemet+python@gmail.com"
+
+__doc__ = '''
+  Find a C Struct in process memory.
+
+'''
+
+import os, sys
+
+if __name__ == "__main__":
+  sys.path.append(os.getcwd())
+  from haystack import abouchet 
+  abouchet.main(sys.argv[1:])
+
+
