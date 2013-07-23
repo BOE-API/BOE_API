@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DataSourceManagerImpl" format="xml" hash="1278197663">
-    <data-source source="LOCAL" name="Django default" product="" version="" jdbc-version="" driver-name="" driver-version="" uuid="c3ff51cc-2159-4553-b754-550fbbfd17ed">
-      <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://23.22.55.44/boe</jdbc-url>
-      <user-name>charlisim</user-name>
-      <user-password>df93df9fdf9ddf9fdf99df9fdf9bdf9f</user-password>
+  <component name="DataSourceManagerImpl" format="xml" hash="2171538717">
+    <data-source source="LOCAL" name="Django default" product="PostgreSQL" version="9.1.9" jdbc-version="3.0" driver-name="PostgreSQL Native Driver" driver-version="PostgreSQL 9.1 JDBC3 (build 901)" uuid="2f1375c5-5d97-4247-9cd9-03664727c059">
+      <identifier-quote-string>&quot;</identifier-quote-string>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://198.199.125.192/boe</jdbc-url>
+      <user-name>postgres</user-name>
+      <user-password>dfdedfcfdfd9dfcbdf98df86dfc7dfdfdfc0dfc3dfd8</user-password>
       <libraries>
         <library>
-          <url>file://$USER_HOME$/Library/Preferences/PyCharm20/jdbc-drivers/mysql-connector-license.txt</url>
+          <url>file://$USER_HOME$/Library/Preferences/PyCharm20/jdbc-drivers/postgresql-driver-license.txt</url>
         </library>
         <library>
-          <url>jar://$USER_HOME$/Library/Preferences/PyCharm20/jdbc-drivers/mysql-connector-java-5.1.18-bin.jar!/</url>
+          <url>file://$USER_HOME$/Library/Preferences/PyCharm20/jdbc-drivers/postgresql-9.1-901.jdbc3.jar</url>
         </library>
       </libraries>
     </data-source>
