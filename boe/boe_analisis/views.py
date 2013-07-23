@@ -2,8 +2,10 @@
 from django.template import RequestContext
 from django.shortcuts import render,render_to_response, redirect
 from django.shortcuts import get_object_or_404
-from boe_analisis.models import Documento, Materia
+from boe_analisis.models import Documento, Materia, Diario
+from boe_analisis.serializers import DocumentoSerializer, DiarioSerializer
 from django.http import HttpResponse
+from rest_framework import viewsets
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import *
 from django.contrib.auth.decorators import user_passes_test, login_required
@@ -89,3 +91,20 @@ def graficos(request):
     count = Documento.objects.filter(fecha_disposicion__gt = '1996-05-01', fecha_disposicion__lt='2004-03-12').count()
 
     return HttpResponse(count)
+
+
+
+
+class DocumentoViewSet(viewsets.ModelViewSet):
+    queryset = Documento.objects.exclude(materias = None)
+    serializer_class = DocumentoSerializer
+
+
+class DiarioViewSet(viewsets.ModelViewSet):
+    queryset = Diario.objects.all()
+    serializer_class = DiarioSerializer
+
+
+class MateriaViewSet(viewsets.ModelViewSet):
+    queryset = Materia.objects.all()
+    serializer_class = DiarioSerializer

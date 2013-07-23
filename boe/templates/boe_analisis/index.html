@@ -1,0 +1,58 @@
+{% include 'boe_analisis/header.html' %}
+            <div class="pagination">
+                <span class="step-links">
+                    {% if lista_docs.has_previous %}
+                        <a href="?page={{ lista_docs.previous_page_number }}">previous</a>
+                    {% endif %}
+
+                    <span class="current">
+                        Page {{ lista_docs.number }} of {{ lista_docs.paginator.num_pages }}.
+                    </span>
+
+                    {% if lista_docs.has_next %}
+                        <a href="?page={{ lista_docs.next_page_number }}">next</a>
+                    {% endif %}
+                </span>
+            </div>
+            <div class="selections">
+                <label for="year">
+                    <select name="year" id="year">
+                        {% for year in years %}
+                            <option value="{{ year }}">{{ year }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+            </div>
+
+
+                {% for doc in lista_docs %}
+                        {% if doc.titulo %}
+                             <div class="row">
+                            <div class="span12">
+                    <div class="span2">
+
+                        <a href="{{ doc.get_absolute_url }}" class="{% if   doc.fecha_publicacion|date:'Y' in gobs.gob_psoe %}
+                            psoe
+                            {% elif doc.fecha_publicacion|date:'Y' in gobs.gob_pp%}
+                            pp
+                         {% endif %}">{{ doc.identificador }}
+                        </a>
+
+
+                    </div>
+
+                    <div class="span8">
+
+                            {{ doc.titulo|default:'Vacio'}}
+
+
+                    </div>
+                     </div></div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            </div>
+            </div>
+            <hr>
+
+{% include 'boe_analisis/footer.html' %}
