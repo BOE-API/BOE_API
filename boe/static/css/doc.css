@@ -1,0 +1,202 @@
+ p         { margin: 0.75em 0; }
+ p.cerrado { margin: 0; }
+ p.normal  { margin: 0.75em 0; }
+ p.texto   { margin: 0.75em 0; text-indent: 1.5em; text-align: justify; }
+
+/* Estilos de plantilla InDesign para el elemento p */
+ p.libro_num         { margin: 3em 4em 0 4em;        text-align: center; }
+ p.libro_tit         { margin: 0.75em 4em 1em 4em;   text-align: center; font-weight: bold; }
+ p.libro             { margin: 3em 4em 1em 4em;      text-align: center; font-weight: bold; }
+ p.titulo_num        { margin: 2.5em 4em 0 4em;      text-align: center; }
+ p.titulo_tit        { margin: 0.75em 4em 1em 4em;   text-align: center; font-weight: bold; }
+ p.titulo            { margin: 2.5em 4em 1em 4em;    text-align: center; font-weight: bold; }
+ p.capitulo_num      { margin: 2em 4em 0 4em;        text-align: center; }
+ p.capitulo_tit      { margin: 0.75em 4em 1em 4em;   text-align: center; font-weight: bold; }
+ p.capitulo          { margin: 2em 4em 1em 4em;      text-align: center; font-weight: bold; }
+ p.seccion           { margin: 2em 4em 1em 4em;      text-align: center; font-style: italic; font-weight: bold; }
+ p.subseccion        { margin: 2em 4em 1em 4em;      text-align: center; }
+ p.articulo          { margin: 1.5em 0 0.75em 0;     font-weight: bold; }
+ p.parrafo           { margin: 0.75em 0;             text-indent: 1.5em; text-align: justify; }
+ p.parrafo_2         { margin: 1.5em 0 0.75em 0;     text-indent: 1.5em; text-align: justify; }
+ p.centro_redonda    { margin: 1.25em 0 1em 0;       text-align: center; font-style: normal; font-weight: normal; }
+ p.centro_cursiva    { margin: 1.25em 0 1em 0;       text-align: center; font-style: italic; font-weight: normal; }
+ p.centro_negrita    { margin: 1.25em 0 1em 0;       text-align: center; font-style: normal; font-weight: bold; }
+ p.anexo_num         { margin: 3em 4em 0 4em;        text-align: center; font-weight: bold; }
+ p.anexo_tit         { margin: 0.75em 4em 1.5em 4em; text-align: center; font-weight: bold; }
+ p.anexo             { margin: 3em 4em 1em 4em;      text-align: center; font-weight: bold; }
+ p.sangrado          { margin: 0.75em 0 0.75em 4em;  text-align: justify; text-indent: 1.5em; }
+ p.sangrado_2        { margin: 1.5em 0 0.75em 4em;   text-align: justify; text-indent: 1.5em; }
+ p.sangrado_articulo { margin: 1.5em 0 0.75em 4em;   font-weight: bold; }
+ p.tabla             { margin: 0; }
+ p.tabla_ancha       { margin: 0; font-family: Arial Narrow, Helvetica Narrow; }
+ p.firma_ministro    { margin: 0; text-align: center; }
+ p.firma_rey         { margin: 1.5em 0 2em 0; text-align: right; }
+ p.cita              { margin: 0.25em 0 0 0; font-size: 85%; font-style: normal ! important; color: #333 ! important; }
+ p.cita_con_pleca    { margin: 0; padding: 0.25em 0 0 0; font-size: 85%; border-top: 1px dotted #bbb; font-style: normal; }
+ p.publicado         { margin: 1.5em 0 0.75em 0;  text-align: center; font-style: italic; }
+ p.imagen            { margin: 2em 0; text-align: center; }
+ p.imagen2           { margin: 0.5em 0; text-align: center; }
+
+ table               { margin: 2em auto; background-color: transparent; }
+ table.tabla         { margin: 2em auto; }
+ table.tabla_ancha   { margin: 2em auto; font-family: "Arial Narrow", "Helvetica Narrow", sans-serif; color: black; }
+ table.sinbordes     { margin: 1em auto; border: 0;}
+ table.sinbordes td  { padding: 0.5em; border: 0; vertical-align: top; }
+ th p.cabeza_tabla   { margin: 0; text-align: center; font-weight: bold; }
+ td p.cuerpo_tabla_izq    { margin: 0; text-align: left;   font-size: 90%; }
+ td p.cuerpo_tabla_centro { margin: 0; text-align: center; font-size: 90%; }
+ td p.cuerpo_tabla_der    { margin: 0; text-align: right;  font-size: 90%; }
+
+/* Estilos antiguos */
+ th p.t_cabeza_tabla        { margin: 0; text-align: center; font-weight:bold; }
+ td p.t_cabeza_tabla        { margin: 0; text-align: center; font-weight:bold; }
+ td p.t_cuerpo_tabla_normal { margin: 0; text-align: left; }
+
+ p.citas             { margin: 0; font-size: 85%; }
+
+/* Se conserva por razones históricas */
+ td p.t_celda_d             { margin: 0; text-align: right; }
+
+/* Valores en los que se convierte el estilo 't_cuerpo_tabla_normal' */
+ td p.t_celda_dcha { margin: 0; text-align: right; font-size: 90%; }
+ td p.t_celda_izda { margin: 0; text-align: left; font-size: 90%; }
+ td p.t_celda_cent { margin: 0; text-align: center; font-size: 90%; }
+
+/* Los tres primeros están importados de eboe.css */
+ dl dd dl dt { /*float: left;*/ padding-right: 0.5em }
+ dt          { clear: both; } /*modif 8-9-2009*/
+ dl dd dl dt { font-weight: bold; /* font-style: italic; */ }
+ dt          { font-weight: bold; }
+ dl dd       { margin: 0.3em 3em }
+ table       { margin: 1em auto; }
+ p           { margin: 0; text-align: justify; }
+ p.normal    { margin: 0.75em 0; text-indent: 1.5em; text-align: justify; }
+
+ img.imagen2 { margin: 0.15em; border: none; }
+ img         { margin: 0.25em; border: 1px solid #bbb; padding: 1em; }
+
+
+
+/*  ----------------- Trasladado por Ramón desde eboe.css---------------------- */
+
+.analisisDoc      { border: 1px solid #aaa; margin: 1em 0; padding: .4em 1em 1em }
+.analisisDoc form { font-weight: bold }
+.analisisDoc h4   { text-align: center; font-size: 1.5em; padding-top: 0em; padding-bottom: 0; margin-top: 0.2em; color: #123a63; }
+
+.analisisDoc ul li {
+  list-style-type : none;
+  list-style-position : outside;
+  list-style-image : url(../imagenes/rayaLi.gif);
+  padding: 0.1em 0;
+}
+.analisisDoc ul li ul li {
+  list-style-image : url(../imagenes/puntoLi.gif);
+}
+
+
+#DOdocText h4, #DOdoc .analisisDoc h3 { text-align: center; font-size: 1.5em; padding-top: 0em; padding-bottom: 0; margin-top: 1em; color: #123a63; }
+
+#DOdocText h4  { margin-bottom: 0; } /*conjunto h4, CON o SIN .notaH*/
+#DOdocText h4 +   { margin-top: 1.4em; border: 0px solid red; }
+#DOdocText .notaH { margin:.1em 0 3em; color: #123a63; font-size: .85em; text-align: center; }
+
+
+
+#DOdocText h5 { text-align: left; font-size: 1.1em; margin-left: 2em }
+.analisisDoc h5 { border-top: 1px solid #ddd; padding: 0 }
+
+
+#barraSep { border:1px solid #aaa; /* border-left: 1px solid #aaa; border-right: 1px solid #aaa; border-bottom: 1px solid #aaa; */ margin: 2em 0 0; padding: 0; }
+#barraSep ul {padding:0; margin:0 1em 0 2em;}
+#barraSep ul li {clear: both; display:block; list-style-image:none; padding-bottom:.2em;}
+#barraSep ul li ul li {display:inline; white-space: nowrap;/*line-height:2.5em;*/}
+.metadatosDoc { margin: 0; padding: 1em 0; }
+
+
+p.documento { margin: 0.2em 2em; }
+p.documento-tit, 
+h3.documento-tit { 
+  font-size: 1.3em; font-weight: normal; margin: 0; color: #000; padding: 1em 1.5em; border-top: none; border-bottom: 1px solid #aaa; background-color: #f8f8f8; text-align: justify; 
+}
+/*
+#BDdoc h3.documento-tit{font-weight:normal;margin:0;color: #000;padding:1em 1.5em;border-bottom: 1px solid #aaa;background-color:#f8f8f8}
+*/
+.enlacesDoc .cajaInfo  { font-size: .85em; padding-right: 1em }
+
+p.etiqDoc { clear: both; float: left; color: #123a63; font-weight: bold; width: 9em; margin: 0.2em; padding: 0 0.15em 0 0; text-align: right; }
+p.valDoc  { float: left; margin: 0.2em; padding: 0; text-align: left; }
+
+.poolBORME p.etiqDoc { width: 7.75em; }
+
+#barraSep ul li.puntoHTML a   {padding:0 30px 0 20px;background:url(../imagenes/enlacesMas.gif) no-repeat 0% 50%;}
+#barraSep ul li.puntoAnal a,   #barraSep ul li.puntoAnalisis a{padding:0 30px;line-height:2.5em; background:url(../imagenes/enlacesAnal.gif) no-repeat 0% 50%;/*display:block*/}
+
+/*-----------------enlace EPUB documentos diario y bbdd------------------- */
+#barraSep ul li.puntoEpub a, ul li.puntoEpub a {padding:0 30px;line-height:2.5em; background:url(../imagenes/enlacesEpub.gif) no-repeat 0% 50%;width: 12em;}
+/*----------------------------------------------- */
+/*-----------------enlace EPUB página epubs------------------- */
+.listaEpub ul li ul li.puntoEpub a  { padding: 0 0 0 30px; line-height: 2.5em; background: url(../imagenes/enlacesEpub.gif) no-repeat 0% 50% }
+.listaEpub ul li ul li.puntoLibro a { padding: 0 0 0 30px; line-height: 2.5em; background: url(../imagenes/novedad_edit2.gif) no-repeat 0% 50% }
+.listaEpub ul li                    { padding: .5em 0 0; list-style-image: none; border-top: 1px solid #eee; }
+.listaEpub li.puntoEpub             { width: 30em; margin: 0 3em 0; text-align: right}
+.listaEpub img.imgIzq               { width: 2em }
+.listaEpub ul                       { padding: .5em 1em; margin: 1em 1em 1.5em 1em; border: 1px solid #eee; }
+.listaEpub ul li ul                 { padding: 0; margin:0 0 0 2em; border: 0px solid #eee; }
+.listaEpub ul li ul li              { padding: 0; list-style-image: none; border-top-width: 0; display: inline }
+/*----------------------------------------------- */
+
+#barraSep ul li.puntoConso a  {padding:0 30px;line-height:3em; background:url(../imagenes/enlacesConso.gif) no-repeat 0% 50%;/*display:block*/}
+#barraSep ul li.puntoPDF a    {padding:0 30px;line-height:3em; background:url(../imagenes/puntoPDF.gif) no-repeat 0% 50%;display:block}
+#barraSep ul li.puntoPDFsup a {padding:.5em 30px;line-height:2.5em;background:url(../imagenes/puntoPDF2.gif) no-repeat 0% 50%;width: 12em;}
+#barraSep ul li.puntoXML a {padding:.5em 30px;line-height:2.5em;background:url(../imagenes/puntoXML.png) no-repeat 0% 50%;}
+
+#barraSep ul li.puntoTIFF a   {padding:0.5em 30px; line-height:2.5em; background:url(../imagenes/enlacesTif.gif) no-repeat 0% 50%;}
+ {border-bottom:0 solid #123a63;margin:0 0 2em}
+
+.tit-doc:first-line {font-weight:bold;}
+.datos-doc {margin:0;padding: 0.4em 2em;}
+.enlacesDoc {margin:0.5em 0}
+.enlacesDoc ul li {padding:0 0em 0 0;display:inline;}
+.enlacesMas {margin:0.5em}
+.enlacesMas a {padding:0 0 0 20px;background:url(../imagenes/enlacesMas.gif) no-repeat 0% 50%;}
+.enlacesPdf {margin:0.5em}
+.enlacesPdf a {padding:0 0 0 20px;background:url(../imagenes/enlacesPdf.gif) no-repeat 0% 50%;}
+.enlacesTif {margin:0.5em}
+.enlacesTif a {padding:0 0 0 20px;background:url(../imagenes/enlacesTif.gif) no-repeat 0% 50%;}
+ul.grupoTiff li {display:inline}
+div.pagTiff {float: left;}
+
+
+#barraSep .cajaInfo {
+  border-width: 1px 0 0;
+}
+.derogada { margin: 0; padding: 0; text-align: center; color: #b00; font-weight: bold; font-size: 1.1em }
+
+table.anaAnu { margin: 0 0 1em; }
+table.anaAnu th, table.anaAnu td { border-width: 0; vertical-align: top; font-size: 1em; }
+table.anaAnu th { text-align: right; background-image: none; width: 21em; font-weight: bold; color: #123a63; }
+table.anaAnu td p { margin: 0 0 0 1.5em; text-indent: -1.5em; }
+/* table.anaAnu td p:first-line {margin-left: -1.5em;} */
+
+/*---------- ver imagen en los txt ------------*/
+p.avisoVerImagen, p.avisoHTML {
+  border-width: 2px;
+  border-style: dashed;
+  border-color: black;
+  padding: 1em 2em 1em 4.5em;
+  margin: .8em 6.5em !important;
+  text-align: left !important;
+  font-size: .9em;
+  font-weight: bold;
+  font-style: italic;
+  color: #333;
+  background-image: url(../imagenes/info.gif);
+  background-repeat: no-repeat;
+  background-position: 1.5% 50%;
+  border: 1px solid #aaa;
+  background-color: #f8f8f8;
+}
+
+.dentro { text-align: center; margin: 1.5em 0 0 0; }
+
+
