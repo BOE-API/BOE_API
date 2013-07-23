@@ -1,0 +1,10 @@
+Metadata-Version: 1.0
+Name: shortuuid
+Version: 0.3
+Summary: A generator library for concise, unambiguous and URL-safe UUIDs.
+Home-page: https://github.com/stochastic-technologies/shortuuid/
+Author: Stochastic Technologies
+Author-email: info@stochastictechnologies.com
+License: BSD
+Description: A library that generates short, pretty, unambiguous unique IDs  by using an extensive, case-sensitive alphabet and omitting similar-looking letters and numbers.
+Platform: UNKNOWN

@@ -1,4 +1,0 @@
-{{ object.identificador }}
-{{ object.titulo }}
-{{ object.texto }}
-
