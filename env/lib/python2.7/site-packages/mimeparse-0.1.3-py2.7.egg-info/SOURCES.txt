@@ -1,0 +1,7 @@
+README
+mimeparse.py
+mimeparse.egg-info/PKG-INFO
+mimeparse.egg-info/SOURCES.txt
+mimeparse.egg-info/dependency_links.txt
+mimeparse.egg-info/top_level.txt
+mimeparse.egg-info/zip-safe
