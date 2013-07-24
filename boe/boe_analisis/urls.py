@@ -1,18 +1,29 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
-from rest_framework import routers
+from boe_analisis.api import *
 from boe_analisis import views
+from tastypie.api import Api
 # admin.site.register(boe_analisis)
 
-
+v1_api = Api(api_name='v1')
+v1_api.register(MateriaResource())
+v1_api.register(DiarioResource())
+v1_api.register(DocumentoResource())
+v1_api.register(DepartamentoResource())
+v1_api.register(RangoResource())
+v1_api.register(LegislaturaResource())
+v1_api.register(Estado_consolidacionResource())
+v1_api.register(Origen_legislativoResource())
 
 
 
 urlpatterns = patterns('',
     url(r'^$', 'boe_analisis.views.home', name='home_docs'),
-    # url(r'^api/$', include(router.urls)),
+    url(r'^api/', include(v1_api.urls)),
     url(r'^documento/(?P<identificador>[\w|\-]+)$', 'boe_analisis.views.individual', name="individual_doc"),
     url(r'^materias/(?P<materia>[\w|\-]+)/$', 'boe_analisis.views.materias' , name="individual_materia"),
     url(r'^materias/$', 'boe_analisis.views.listado_materias', name='listado_materias'),
     url(r'^graficos/$', 'boe_analisis.views.graficos', name='graficos'),
+    url(r'^api/v1/years/$', 'boe_analisis.views.years'),
+    url(r'^api/v1/years/materia/(?P<materia>\d+)$', 'boe_analisis.views.years'),
                        )

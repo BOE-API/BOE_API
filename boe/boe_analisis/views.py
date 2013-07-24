@@ -3,9 +3,10 @@ from django.template import RequestContext
 from django.shortcuts import render,render_to_response, redirect
 from django.shortcuts import get_object_or_404
 from boe_analisis.models import Documento, Materia, Diario
-from boe_analisis.serializers import DocumentoSerializer, DiarioSerializer
 from django.http import HttpResponse
-from rest_framework import viewsets
+import json
+
+from django.db import connection
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import *
 from django.contrib.auth.decorators import user_passes_test, login_required
@@ -14,6 +15,7 @@ from django.contrib.auth.models import User, Group
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.cache import cache
 from django.views.decorators.cache import cache_page
+from django.http import Http404
 
 
 
@@ -87,6 +89,34 @@ def materias(request, materia):
     context = {'lista_docs': lista_docs}
     return render_to_response('boe_analisis/index.html', context)
 
+
+def years(request, materia=None):
+    cursor = connection.cursor()
+    if materia:
+        print 'pasa por materia'
+        cursor.execute('SELECT distinct(extract(year from fecha_publicacion)) as year_select '
+                      ' from boe_analisis_documento doc, boe_analisis_documento_materias mat '
+                        'where fecha_publicacion IS NOT NULL and '
+                        'doc.id = mat.documento_id and mat.materia_id = %s '
+                       'order by  year_select', [materia])
+
+
+    else:
+        print 'pasa por el else'
+        cursor.execute('SELECT distinct(extract(year from fecha_publicacion)) as year_select '
+                       'from boe_analisis_documento  where fecha_publicacion'
+                       ' IS NOT NULL order by  year_select;')
+    years = []
+
+    for year in cursor.fetchall():
+        # print int(year[0])
+        years.append(int(year[0]))
+    if len(years) == 0:
+        raise Http404
+
+    return HttpResponse(json.dumps(years), content_type="application/json")
+
+
 def graficos(request):
     count = Documento.objects.filter(fecha_disposicion__gt = '1996-05-01', fecha_disposicion__lt='2004-03-12').count()
 
@@ -94,17 +124,3 @@ def graficos(request):
 
 
 
-
-class DocumentoViewSet(viewsets.ModelViewSet):
-    queryset = Documento.objects.exclude(materias = None)
-    serializer_class = DocumentoSerializer
-
-
-class DiarioViewSet(viewsets.ModelViewSet):
-    queryset = Diario.objects.all()
-    serializer_class = DiarioSerializer
-
-
-class MateriaViewSet(viewsets.ModelViewSet):
-    queryset = Materia.objects.all()
-    serializer_class = DiarioSerializer
