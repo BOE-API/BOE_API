@@ -16,7 +16,7 @@ from tastypie import resources
 from django.http import HttpResponse
 from django.core.cache import cache
 from tastypie.paginator import Paginator
-
+from tastypie.cache import SimpleCache
 
 
 def build_content_type(format, encoding='utf-8'):
@@ -54,6 +54,7 @@ class DepartamentoResource(MyModelResource):
         list_allowed_methods = ['get', 'post']
         detail_allowed_methods = ['get', 'post']
         authorization = DjangoAuthorization()
+        cache = SimpleCache(timeout=60*60*24)
 
 class RangoResource(MyModelResource):
     class Meta:
@@ -62,6 +63,7 @@ class RangoResource(MyModelResource):
         list_allowed_methods = ['get', 'post']
         detail_allowed_methods = ['get', 'post']
         authorization = DjangoAuthorization()
+        cache = SimpleCache(timeout=60*60*24)
     def determine_format(self, request):
         return 'application/json'
 
@@ -73,6 +75,7 @@ class PartidoResource(MyModelResource):
         list_allowed_methods = ['get', 'post']
         detail_allowed_methods = ['get', 'post']
         authorization = DjangoAuthorization()
+        cache = SimpleCache(timeout=60*60*24)
     def determine_format(self, request):
         return 'application/json'
 
@@ -84,6 +87,7 @@ class LegislaturaResource(MyModelResource):
         list_allowed_methods = ['get', 'post']
         detail_allowed_methods = ['get', 'post']
         authorization = DjangoAuthorization()
+        cache = SimpleCache(timeout=60*60*24)
     def determine_format(self, request):
         return 'application/json'
 
@@ -95,6 +99,7 @@ class Estado_consolidacionResource(MyModelResource):
         list_allowed_methods = ['get', 'post']
         detail_allowed_methods = ['get', 'post']
         authorization = DjangoAuthorization()
+        cache = SimpleCache(timeout=60*60*24)
     def determine_format(self, request):
         return 'application/json'
 
@@ -106,6 +111,7 @@ class Origen_legislativoResource(MyModelResource):
         list_allowed_methods = ['get', 'post']
         detail_allowed_methods = ['get', 'post']
         authorization = DjangoAuthorization()
+        cache = SimpleCache(timeout=60*60*24)
     def determine_format(self, request):
         return 'application/json'
 
@@ -122,6 +128,7 @@ class MateriaResource(MyModelResource):
         filtering = {
             'titulo': ALL,
         }
+        cache = SimpleCache(timeout=60*60*24)
     def determine_format(self, request):
         return 'application/json'
 
@@ -133,7 +140,7 @@ class DiarioResource(MyModelResource):
         list_allowed_methods = ['get', 'post']
         detail_allowed_methods = ['get', 'post']
         authorization = DjangoAuthorization()
-
+        cache = SimpleCache(timeout=60*60*24)
 
     def determine_format(self, request):
         return 'application/json'
@@ -156,6 +163,7 @@ class AlertaResource(MyModelResource):
         list_allowed_methods = ['get', 'post']
         detail_allowed_methods = ['get', 'post']
         authorization = DjangoAuthorization()
+        cache = SimpleCache(timeout=60*60*24)
     def determine_format(self, request):
         return 'application/json'
 
@@ -166,6 +174,7 @@ class PalabraResource(MyModelResource):
         list_allowed_methods = ['get', 'post']
         detail_allowed_methods = ['get', 'post']
         authorization = DjangoAuthorization()
+        cache = SimpleCache(timeout=60*60*24)
     def determine_format(self, request):
         return 'application/json'
 
@@ -179,6 +188,7 @@ class ReferenciaResource(MyModelResource):
         list_allowed_methods = ['get', 'post']
         detail_allowed_methods = ['get', 'post']
         authorization = DjangoAuthorization()
+        cache = SimpleCache(timeout=60*60*24)
     def determine_format(self, request):
         return 'application/json'
 
@@ -267,6 +277,7 @@ class DocumentoResource(MyModelResource):
         # authentication = BasicAuthentication()
         authorization = ReadOnlyAuthorization()
         paginator_class = Paginator
+        cache = SimpleCache(timeout=60*60*24)
     def determine_format(self, request):
         return 'application/json'
     def prepend_urls(self):
@@ -336,6 +347,7 @@ class BOEResource(DocumentoResource):
         # authentication = BasicAuthentication()
         authorization = ReadOnlyAuthorization()
         paginator_class = Paginator
+        cache = SimpleCache(timeout=60*60*24)
 
 class BORMEResource(DocumentoResource):
 
@@ -357,3 +369,4 @@ class BORMEResource(DocumentoResource):
         # authentication = BasicAuthentication()
         authorization = ReadOnlyAuthorization()
         paginator_class = Paginator
+        cache = SimpleCache(timeout=60*60*24)
