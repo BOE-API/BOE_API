@@ -1,6 +1,6 @@
 # Django settings for boe project.
 
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -120,6 +120,7 @@ TEMPLATE_DIRS = (
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     '/home/web_1/boe_django/boe/templates',
+    '/Users/Carlos/Dropbox/proyectos/boe_crawler_django/boe/templates'
 )
 
 INSTALLED_APPS = (
