@@ -61,20 +61,20 @@ MEDIA_URL = ''
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
-STATIC_ROOT = 'http://192.241.144.61/static/'
+STATIC_ROOT = 'http://contenido.cuantocobran.com'
 ADMIN_MEDIA_PREFIX = '/static/admin/'
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
-STATIC_URL = 'http://192.241.144.61/static/'
+STATIC_URL = 'http://contenido.cuantocobran.com/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    ('img', 'http://192.241.144.61/static/img/'),
-    ('css', 'http://192.241.144.61/static/css/'),
-    ('js', 'http://192.241.144.61/static/js/'),
+    ('img', 'http://contenido.cuantocobran.comimg/'),
+    ('css', 'http://contenido.cuantocobran.comcss/'),
+    ('js', 'http://contenido.cuantocobran.comjs/'),
 
 
 )

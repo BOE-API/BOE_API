@@ -133,8 +133,11 @@ class DiarioResource(MyModelResource):
         list_allowed_methods = ['get', 'post']
         detail_allowed_methods = ['get', 'post']
         authorization = DjangoAuthorization()
+
+
     def determine_format(self, request):
         return 'application/json'
+
 
 class NotaResource(MyModelResource):
     class Meta:
@@ -253,6 +256,7 @@ class DocumentoResource(MyModelResource):
             'titulo': ALL,
             'identificador': ALL,
             'fecha_publicacion': ALL,
+            'diario': ALL_WITH_RELATIONS,
             'materias': ALL_WITH_RELATIONS,
             'legislatura': ALL_WITH_RELATIONS,
             'notas': ALL_WITH_RELATIONS,
@@ -304,3 +308,52 @@ class DocumentoResource(MyModelResource):
 
         self.log_throttled_access(request)
         return self.create_response(request, object_list)
+
+
+
+class BOEResource(DocumentoResource):
+
+
+    class Meta:
+        queryset = Documento.objects.exclude(url_xml=None).filter(diario = 'BOE')
+        resource_name = 'documentoboe'
+        api_name = 'v1',
+        detail_uri_name = 'identificador'
+        list_allowed_methods = ['get', 'post']
+        detail_allowed_methods = ['get', 'post']
+        filtering = {
+            'titulo': ALL,
+            'identificador': ALL,
+            'fecha_publicacion': ALL,
+            'diario': ALL_WITH_RELATIONS,
+            'materias': ALL_WITH_RELATIONS,
+            'legislatura': ALL_WITH_RELATIONS,
+            'notas': ALL_WITH_RELATIONS,
+            'referencias_anteriores': ALL_WITH_RELATIONS,
+            'referencias_posteriores': ALL_WITH_RELATIONS,
+
+        }
+        # authentication = BasicAuthentication()
+        authorization = ReadOnlyAuthorization()
+        paginator_class = Paginator
+
+class BORMEResource(DocumentoResource):
+
+
+    class Meta:
+        queryset = Documento.objects.exclude(url_xml=None).filter(diario = 'BORME')
+        resource_name = 'documentoborme'
+        api_name = 'v1',
+        detail_uri_name = 'identificador'
+        list_allowed_methods = ['get', 'post']
+        detail_allowed_methods = ['get', 'post']
+        filtering = {
+            'titulo': ALL,
+            'identificador': ALL,
+            'fecha_publicacion': ALL,
+            'diario': ALL_WITH_RELATIONS,
+
+        }
+        # authentication = BasicAuthentication()
+        authorization = ReadOnlyAuthorization()
+        paginator_class = Paginator
