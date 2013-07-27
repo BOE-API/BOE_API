@@ -179,8 +179,9 @@ LOGGING = {
 CACHES = {
     'default': {
         'BACKEND': 'redis_cache.cache.RedisCache',
-        'LOCATION': '185.14.184.132:6379:0',
+        'LOCATION': '185.14.184.132:6379',
         "OPTIONS": {
+            "DB" : 0,
             "CLIENT_CLASS": "redis_cache.client.DefaultClient",
         },
     },
