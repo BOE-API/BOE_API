@@ -1,58 +1,109 @@
 __author__ = 'Carlos'
 from boe_analisis.models import Materia, Documento, Diario, Origen_legislativo
-from boe_analisis.models import Departamento, Rango, Legislatura, Estado_consolidacion
+from boe_analisis.models import Departamento, Partido, Rango, Legislatura, Estado_consolidacion
 from tastypie.resources import ModelResource, Bundle
 from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
 from tastypie import fields
-from tastypie.authorization import DjangoAuthorization
+from tastypie.authorization import DjangoAuthorization, ReadOnlyAuthorization
+from tastypie.authentication import ApiKeyAuthentication, BasicAuthentication
 from django.conf.urls import url
 from haystack.query import SearchQuerySet
 from django.core.paginator import Paginator, InvalidPage
 from django.http import Http404
 from tastypie.utils import trailing_slash
+from tastypie import resources
+from django.http import HttpResponse
 from django.core.cache import cache
-class DepartamentoResource(ModelResource):
+from tastypie.paginator import Paginator
+
+
+
+def build_content_type(format, encoding='utf-8'):
+    """
+    Appends character encoding to the provided format if not already present.
+    """
+    print format
+    if 'charset' in format:
+        return format
+
+    return "%s; charset=%s" % (format, encoding)
+
+class MyModelResource(resources.ModelResource):
+    def create_response(self, request, data, response_class=HttpResponse, **response_kwargs):
+        """
+        Extracts the common "which-format/serialize/return-response" cycle.
+
+        Mostly a useful shortcut/hook.
+        """
+        desired_format = self.determine_format(request)
+        serialized = self.serialize(request, data, desired_format)
+        return response_class(content=serialized, content_type=build_content_type(desired_format), **response_kwargs)
+
+
+class PageNumberPaginator(Paginator):
+    def page(self):
+        output = super(PageNumberPaginator, self).page()
+        output['page'] = int(self.offset / self.limit) + 1
+        return output
+
+class DepartamentoResource(MyModelResource):
     class Meta:
         queryset = Departamento.objects.all()
         resource_name = 'departamento'
         list_allowed_methods = ['get', 'post']
+        detail_allowed_methods = ['get', 'post']
         authorization = DjangoAuthorization()
 
-class RangoResource(ModelResource):
+class RangoResource(MyModelResource):
     class Meta:
         queryset = Rango.objects.all()
         resource_name = 'rango'
         list_allowed_methods = ['get', 'post']
+        detail_allowed_methods = ['get', 'post']
         authorization = DjangoAuthorization()
     def determine_format(self, request):
         return 'application/json'
 
 
-class LegislaturaResource(ModelResource):
+class PartidoResource(MyModelResource):
+    class Meta:
+        queryset = Partido.objects.all()
+        resource_name = 'partido'
+        list_allowed_methods = ['get', 'post']
+        detail_allowed_methods = ['get', 'post']
+        authorization = DjangoAuthorization()
+    def determine_format(self, request):
+        return 'application/json'
+
+
+class LegislaturaResource(MyModelResource):
     class Meta:
         queryset = Legislatura.objects.all()
         resource_name = 'legislatura'
         list_allowed_methods = ['get', 'post']
+        detail_allowed_methods = ['get', 'post']
         authorization = DjangoAuthorization()
     def determine_format(self, request):
         return 'application/json'
 
-#
-class Estado_consolidacionResource(ModelResource):
+
+class Estado_consolidacionResource(MyModelResource):
     class Meta:
         queryset = Estado_consolidacion.objects.all()
         resource_name = 'estado_consolidacion'
         list_allowed_methods = ['get', 'post']
+        detail_allowed_methods = ['get', 'post']
         authorization = DjangoAuthorization()
     def determine_format(self, request):
         return 'application/json'
 
 
-class Origen_legislativoResource(ModelResource):
+class Origen_legislativoResource(MyModelResource):
     class Meta:
         queryset = Origen_legislativo.objects.all()
         resource_name = 'origen_legislativo'
         list_allowed_methods = ['get', 'post']
+        detail_allowed_methods = ['get', 'post']
         authorization = DjangoAuthorization()
     def determine_format(self, request):
         return 'application/json'
@@ -60,11 +111,12 @@ class Origen_legislativoResource(ModelResource):
 
 
 
-class MateriaResource(ModelResource):
+class MateriaResource(MyModelResource):
     class Meta:
         queryset = Materia.objects.all()
         resource_name = 'materia'
         list_allowed_methods = ['get', 'post']
+        detail_allowed_methods = ['get', 'post']
         authorization = DjangoAuthorization()
         filtering = {
             'titulo': ALL,
@@ -73,24 +125,57 @@ class MateriaResource(ModelResource):
         return 'application/json'
 
 
-class DiarioResource(ModelResource):
+class DiarioResource(MyModelResource):
     class Meta:
         queryset = Diario.objects.all()
         resource_name = 'diario'
         list_allowed_methods = ['get', 'post']
+        detail_allowed_methods = ['get', 'post']
         authorization = DjangoAuthorization()
     def determine_format(self, request):
         return 'application/json'
 
 
-class DocumentoResource(ModelResource):
-    diario_numero = fields.ForeignKey(DiarioResource, 'diario', full=True)
-    materias = fields.ToManyField(MateriaResource, 'materias', full=True)
-    departamento = fields.ForeignKey(DepartamentoResource, 'departamento', full=True, null=True,blank=True)
-    origen_legislativo = fields.ForeignKey(Origen_legislativoResource, 'origen_legislativo', full=True, null=True,blank=True)
-    estado_consolidacion = fields.ForeignKey(Estado_consolidacionResource, 'estado_consolidacion', full=True, null=True,blank=True)
-    rango = fields.ForeignKey(RangoResource, 'rango', full=True, null=True,blank=True)
-    legislatura = fields.ForeignKey(LegislaturaResource, 'legislatura', full=True, null=True,blank=True)
+
+class DocumentoResource(MyModelResource):
+    diario = fields.ForeignKey(DiarioResource,
+                                      'diario',
+                                      full=True,
+                                      help_text="Codigo del Diario")
+    materias = fields.ToManyField(MateriaResource,
+                                  'materias',
+                                  full=True,
+                                  help_text="Materias del documento")
+    departamento = fields.ForeignKey(DepartamentoResource,
+                                     'departamento',
+                                     full=True,
+                                     null=True,
+                                     blank=True,
+                                     help_text="Departamento del documento")
+    origen_legislativo = fields.ForeignKey(Origen_legislativoResource,
+                                           'origen_legislativo',
+                                           full=True,
+                                           null=True,
+                                           blank=True,
+                                           help_text="Origen Legislativo")
+    estado_consolidacion = fields.ForeignKey(Estado_consolidacionResource,
+                                             'estado_consolidacion',
+                                             full=True,
+                                             null=True,
+                                             blank=True,
+                                             help_text="Estado de consolidacion")
+    rango = fields.ForeignKey(RangoResource,
+                            'rango',
+                            full=True,
+                            null=True,
+                            blank=True,
+                            help_text="Rango del Documento(Ley, Real Decreto...)")
+    legislatura = fields.ForeignKey(LegislaturaResource,
+                                    'legislatura',
+                                    full=True,
+                                    null=True,
+                                    blank=True,
+                                    help_text="Legislatura de disposicion de la ley")
     search = None
     last_query = ''
 
@@ -101,15 +186,17 @@ class DocumentoResource(ModelResource):
         api_name = 'v1',
         detail_uri_name = 'identificador'
         list_allowed_methods = ['get', 'post']
+        detail_allowed_methods = ['get', 'post']
         filtering = {
             'titulo': ALL,
             'identificador': ALL,
             'fecha_publicacion': ALL,
             'materias': ALL_WITH_RELATIONS,
         }
-        authorization = DjangoAuthorization()
-    def determine_format(self, request):
-        return 'application/json'
+        # authentication = BasicAuthentication()
+        authorization = ReadOnlyAuthorization()
+        paginator_class = Paginator
+
     def prepend_urls(self):
         return [url(r"^(?P<resource_name>%s)/search%s$" % (self._meta.resource_name, trailing_slash()), self.wrap_view('get_search'), name="api_get_search"),]
     def get_search(self, request, **kwargs):

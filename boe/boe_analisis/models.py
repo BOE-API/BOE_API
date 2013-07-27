@@ -1,5 +1,7 @@
+# -*- coding: utf-8 -*-
 from django.db import models
 import datetime
+
 # Create your models here.
 
 
@@ -67,45 +69,115 @@ class Legislatura(models.Model):
 
 class Documento(models.Model):
 
-    identificador = models.CharField(max_length=25, db_index=True, unique=True)
-    titulo = models.CharField(null=True, max_length=5000, default='', db_index=True)
+    identificador = models.CharField(max_length=25,
+                                     db_index=True,
+                                     unique=True,
+                                     help_text="Identificador oficial del documento")
+    titulo = models.CharField(null=True,
+                              max_length=5000,
+                              default='',
+                              db_index=True,
+                              help_text="Titulo del documento")
     diario = models.ForeignKey(Diario, null=True)
-    diario_numero = models.IntegerField(null=True)
-    seccion = models.CharField(max_length=50, null=True, default='')
-    subseccion = models.CharField(max_length=50, null=True, default='')
-    rango = models.ForeignKey(Rango, null=True)
-    departamento = models.ForeignKey(Departamento, null=True)
-    numero_oficial = models.CharField(max_length=50, null=True, default='')
-    fecha_disposicion = models.DateField(null=True)
-    fecha_publicacion = models.DateField(null=True, db_index=True)
-    fecha_vigencia = models.DateField(null=True)
-    fecha_derogacion = models.DateField(null=True)
-    letra_imagen = models.CharField(max_length=10, null=True, default='')
-    pagina_inicial = models.IntegerField(null=True)
-    pagina_final = models.IntegerField(null=True)
-    suplemento_letra_imagen = models.CharField(max_length=10, null=True, default='')
-    suplemento_pagina_inicial = models.CharField(max_length=10, null=True, default='')
-    suplemento_pagina_final = models.CharField(max_length=10, null=True, default='')
-    estatus_legislativo = models.CharField(max_length=10, null=True, default='')
-    origen_legislativo = models.ForeignKey(Origen_legislativo, null=True)
-    estado_consolidacion = models.ForeignKey(Estado_consolidacion, null=True)
-    judicialmente_anulada = models.NullBooleanField(null=True)
-    vigencia_agotada = models.NullBooleanField(null=True)
-    legislatura = models.ForeignKey(Legislatura,null=True)
-    url_epub = models.URLField(null=True)
-    url_xml = models.URLField(null=True, db_index=True)
-    url_htm = models.URLField(null=True)
-    url_pdf = models.URLField(null=True)
-    url_pdf_catalan = models.URLField(null=True)
-    url_pdf_euskera = models.URLField(null=True)
-    url_pdf_gallego = models.URLField(null=True)
-    url_pdf_valenciano = models.URLField(null=True)
-    notas = models.ManyToManyField(Nota)
-    materias = models.ManyToManyField(Materia)
-    alertas = models.ManyToManyField(Alerta)
-    referencias_anteriores = models.ManyToManyField(Referencia, related_name='ref_anteriores')
-    referencias_posteriores = models.ManyToManyField(Referencia, related_name='ref_posteriores')
-    texto = models.TextField(null=True, default='')
+    diario_numero = models.IntegerField(null=True,
+                                        help_text="Corresponde al número del diario"
+                                                  " en el que se publicó la norma. "
+                                                  "Es un número correlativo que comienza cada año."
+                                                  )
+    seccion = models.CharField(max_length=50,
+                               null=True,
+                               default='',
+                               help_text="Sección")
+    subseccion = models.CharField(max_length=50,
+                                  null=True,
+                                  default='',
+                                  help_text="Subsección")
+    rango = models.ForeignKey(Rango,
+                              null=True,
+                              help_text="Categoría normativa de la disposición: "
+                                        "Ley, Real Decreto, Orden, Directiva,"
+                                        " etcétera.")
+    departamento = models.ForeignKey(Departamento, null=True,
+                                     help_text="Organismo que emite la resolución.")
+    numero_oficial = models.CharField(max_length=50,
+                                      null=True,
+                                      default='',
+                                      help_text="Es el número de la norma, "
+                                                "tiene estructura de número/año."
+                                                " Ejemplo: 169/2008")
+    fecha_disposicion = models.DateField(null=True,
+                                         help_text="Es la fecha en la que se aprueba la norma.")
+    fecha_publicacion = models.DateField(null=True, db_index=True,
+                                         help_text="Es la fecha del BOE o DOUE"
+                                                   " en la que se publicó la norma.")
+    fecha_vigencia = models.DateField(null=True,
+                                      help_text="Fecha en la que entra en vigor la norma")
+    fecha_derogacion = models.DateField(null=True,
+                                        help_text="Fecha en la que la norma de deroga")
+    letra_imagen = models.CharField(max_length=10, null=True, default='',
+                                    help_text="-")
+    pagina_inicial = models.IntegerField(null=True,
+                                         help_text="Pagina inicial")
+    pagina_final = models.IntegerField(null=True,
+                                       help_text="Pagina final")
+    suplemento_letra_imagen = models.CharField(max_length=10,
+                                               null=True,
+                                               default='',
+                                               help_text="-")
+    suplemento_pagina_inicial = models.CharField(max_length=10,
+                                                 null=True,
+                                                 default='',
+                                                 help_text="-")
+    suplemento_pagina_final = models.CharField(max_length=10,
+                                               null=True,
+                                               default='',
+                                               help_text="-")
+    estatus_legislativo = models.CharField(max_length=10,
+                                           null=True,
+                                           default='',
+                                           help_text="-")
+    origen_legislativo = models.ForeignKey(Origen_legislativo,
+                                           null=True,
+                                           help_text="Autonomico, Estatal o Europeo")
+    estado_consolidacion = models.ForeignKey(Estado_consolidacion,
+                                             null=True,
+                                             help_text="Desactualizado, Finalizado o En proceso")
+    judicialmente_anulada = models.NullBooleanField(null=True,
+                                                    help_text="Anulada judicialmente")
+    vigencia_agotada = models.NullBooleanField(null=True,
+                                               help_text="Con vigencia agotada")
+    legislatura = models.ForeignKey(Legislatura,null=True,
+                                    help_text="Legislatura en la que se aprobó la norma")
+    url_epub = models.URLField(null=True,
+                               help_text="URL EPUB")
+    url_xml = models.URLField(null=True, db_index=True,
+                              help_text="URL XML")
+    url_htm = models.URLField(null=True,
+                              help_text="URL HTML")
+    url_pdf = models.URLField(null=True,
+                              help_text="URL PDF")
+    url_pdf_catalan = models.URLField(null=True,
+                                      help_text="URL PDF Catalan (No todos los documentos los tienen)")
+    url_pdf_euskera = models.URLField(null=True,
+                                       help_text="URL PDF Euskera (No todos los documentos los tienen)")
+    url_pdf_gallego = models.URLField(null=True,
+                                       help_text="URL PDF Gallego (No todos los documentos los tienen)")
+    url_pdf_valenciano = models.URLField(null=True,
+                                          help_text="URL PDF Valenciano (No todos los documentos los tienen)")
+    notas = models.ManyToManyField(Nota,
+                                   help_text="Notas del documento")
+    materias = models.ManyToManyField(Materia,
+                                      help_text="Materias del documento")
+    alertas = models.ManyToManyField(Alerta,
+                                     help_text="Alertas disponibles para el documento")
+    referencias_anteriores = models.ManyToManyField(Referencia,
+                                                    related_name='ref_anteriores',
+                                                    help_text="Referencias anteriores")
+    referencias_posteriores = models.ManyToManyField(Referencia,
+                                                     related_name='ref_posteriores',
+                                                     help_text="Referencias posteriores")
+    texto = models.TextField(null=True, default='',
+                             help_text="Texto del documento en HTML")
 
     def __unicode__(self):
         return self.identificador

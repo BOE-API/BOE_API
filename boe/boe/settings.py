@@ -135,6 +135,7 @@ INSTALLED_APPS = (
     'south',
     'haystack',
     'tastypie',
+    'tastydocs',
     # Uncomment the next line to enable the admin:
 
     # Uncomment the next line to enable admin documentation:
@@ -174,14 +175,14 @@ LOGGING = {
         },
     }
 }
-# CACHES = {
-#     'default': {
-#         'BACKEND': 'redis_cache.cache.RedisCache',
-#         'LOCATION': '185.14.184.132:6379:0',
-#         "OPTIONS": {
-#             "CLIENT_CLASS": "redis_cache.client.DefaultClient",
-#         },
-#     },
-# }
-#
+CACHES = {
+    'default': {
+        'BACKEND': 'redis_cache.cache.RedisCache',
+        'LOCATION': '185.14.184.132:6379:0',
+        "OPTIONS": {
+            "CLIENT_CLASS": "redis_cache.client.DefaultClient",
+        },
+    },
+}
+
 
