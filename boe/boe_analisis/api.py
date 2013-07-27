@@ -142,10 +142,14 @@ class DocumentoResource(MyModelResource):
                                       'diario',
                                       full=True,
                                       null=True,
+                                      blank=True,
+
                                       help_text="Codigo del Diario")
     materias = fields.ToManyField(MateriaResource,
                                   'materias',
                                   full=True,
+                                  null=True,
+                                  blank=True,
                                   help_text="Materias del documento")
     departamento = fields.ForeignKey(DepartamentoResource,
                                      'departamento',
