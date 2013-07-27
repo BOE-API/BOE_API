@@ -78,7 +78,7 @@ class Documento(models.Model):
                               default='',
                               db_index=True,
                               help_text="Titulo del documento")
-    diario = models.ForeignKey(Diario, null=True, default='')
+    diario = models.ForeignKey(Diario, null=True)
     diario_numero = models.IntegerField(null=True,
                                         help_text="Corresponde al número del diario"
                                                   " en el que se publicó la norma. "
