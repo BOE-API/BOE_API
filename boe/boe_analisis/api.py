@@ -1,5 +1,6 @@
 __author__ = 'Carlos'
 from boe_analisis.models import Materia, Documento, Diario, Origen_legislativo
+from boe_analisis.models import Nota, Palabra, Referencia, Alerta
 from boe_analisis.models import Departamento, Partido, Rango, Legislatura, Estado_consolidacion
 from tastypie.resources import ModelResource, Bundle
 from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
@@ -135,7 +136,48 @@ class DiarioResource(MyModelResource):
     def determine_format(self, request):
         return 'application/json'
 
+class NotaResource(MyModelResource):
+    class Meta:
+        queryset = Nota.objects.all()
+        resource_name = 'nota'
+        list_allowed_methods = ['get', 'post']
+        detail_allowed_methods = ['get', 'post']
+        authorization = DjangoAuthorization()
+    def determine_format(self, request):
+        return 'application/json'
 
+class AlertaResource(MyModelResource):
+    class Meta:
+        queryset = Alerta.objects.all()
+        resource_name = 'alerta'
+        list_allowed_methods = ['get', 'post']
+        detail_allowed_methods = ['get', 'post']
+        authorization = DjangoAuthorization()
+    def determine_format(self, request):
+        return 'application/json'
+
+class PalabraResource(MyModelResource):
+    class Meta:
+        queryset = Palabra.objects.all()
+        resource_name = 'palabra'
+        list_allowed_methods = ['get', 'post']
+        detail_allowed_methods = ['get', 'post']
+        authorization = DjangoAuthorization()
+    def determine_format(self, request):
+        return 'application/json'
+
+class ReferenciaResource(MyModelResource):
+
+    # referencia = fields.ForeignKey('DocumentoResource', null=True, blank=True)
+    # palabra = fields.ForeignKey(PalabraResource, null=True, blank=True)
+    class Meta:
+        queryset = Referencia.objects.all()
+        resource_name = 'referencia'
+        list_allowed_methods = ['get', 'post']
+        detail_allowed_methods = ['get', 'post']
+        authorization = DjangoAuthorization()
+    def determine_format(self, request):
+        return 'application/json'
 
 class DocumentoResource(MyModelResource):
     diario = fields.ForeignKey(DiarioResource,
@@ -181,12 +223,27 @@ class DocumentoResource(MyModelResource):
                                     null=True,
                                     blank=True,
                                     help_text="Legislatura de disposicion de la ley")
+
+
+    alertas = fields.ToManyField(AlertaResource, 'alertas', full=True,
+                                    null=True, blank=True)
+    notas = fields.ToManyField(NotaResource, 'notas', full=True,
+                               null=True, blank=True)
+
+
+    referencias_anteriores = fields.ToManyField('boe_analisis.api.ReferenciaResource', 'referencias_anteriores',full=True,
+                                   null=True, blank=True,
+                                   related_name='ref_anteriores')
+    referencias_posteriores = fields.ToManyField('boe_analisis.api.ReferenciaResource', 'referencias_posteriores', full=True,
+                                   null=True, blank=True,
+                                   related_name='ref_posteriores')
+
     search = None
     last_query = ''
 
 
     class Meta:
-        queryset = Documento.objects.all()
+        queryset = Documento.objects.exclude(url_xml=None).select_related()
         resource_name = 'documento'
         api_name = 'v1',
         detail_uri_name = 'identificador'
@@ -197,11 +254,17 @@ class DocumentoResource(MyModelResource):
             'identificador': ALL,
             'fecha_publicacion': ALL,
             'materias': ALL_WITH_RELATIONS,
+            'legislatura': ALL_WITH_RELATIONS,
+            'notas': ALL_WITH_RELATIONS,
+            'referencias_anteriores': ALL_WITH_RELATIONS,
+            'referencias_posteriores': ALL_WITH_RELATIONS,
+
         }
         # authentication = BasicAuthentication()
         authorization = ReadOnlyAuthorization()
         paginator_class = Paginator
-
+    def determine_format(self, request):
+        return 'application/json'
     def prepend_urls(self):
         return [url(r"^(?P<resource_name>%s)/search%s$" % (self._meta.resource_name, trailing_slash()), self.wrap_view('get_search'), name="api_get_search"),]
     def get_search(self, request, **kwargs):

@@ -12,6 +12,13 @@ v1_api = Api(api_name='v1')
 v1_api.register(MateriaResource())
 v1_api.register(DiarioResource())
 v1_api.register(DocumentoResource())
+v1_api.register(NotaResource())
+v1_api.register(AlertaResource())
+v1_api.register(PalabraResource())
+v1_api.register(ReferenciaResource())
+v1_api.register(NotaResource())
+
+
 v1_api.register(DepartamentoResource())
 v1_api.register(RangoResource())
 v1_api.register(LegislaturaResource())

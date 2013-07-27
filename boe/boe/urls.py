@@ -1,4 +1,4 @@
-from boe_analisis.models import Documento, Diario
+from boe_analisis.models import Documento, Diario, Partido, Legislatura
 from boe_analisis.urls import *
 from django.conf.urls import patterns, include, url
 from boe_analisis import views
@@ -7,6 +7,8 @@ from django.contrib import admin
 
 admin.autodiscover()
 admin.site.register(Documento)
+admin.site.register(Partido)
+admin.site.register(Legislatura)
 
 
 

@@ -60,10 +60,22 @@ class Partido(models.Model):
 
     nombre = models.CharField(max_length=200)
 
+    def __unicode__(self):
+        return self.nombre
+
 class Legislatura(models.Model):
     inicio = models.DateField()
-    final = models.DateField()
+    final = models.DateField(null=True, blank=True)
     partido = models.ForeignKey(Partido)
+    presidente = models.CharField(max_length=300)
+    nombre_legislatura = models.CharField(max_length=600)
+
+    class Meta:
+        ordering = ['inicio']
+
+    def __unicode__(self):
+        return self.nombre_legislatura
+
 
 
 
@@ -181,7 +193,8 @@ class Documento(models.Model):
 
     def __unicode__(self):
         return self.identificador
-
+    class Meta:
+        ordering = ['-fecha_publicacion']
     def get_absolute_url(self):
         from django.core.urlresolvers import reverse
         return reverse('individual_doc', args=[str(self.identificador)])
