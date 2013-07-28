@@ -9,7 +9,7 @@ from tastypie.authorization import DjangoAuthorization, ReadOnlyAuthorization
 from tastypie.authentication import ApiKeyAuthentication, BasicAuthentication
 from django.conf.urls import url
 from haystack.query import SearchQuerySet
-from django.core.paginator import Paginator, InvalidPage
+# from django.core.paginator import Paginator, InvalidPage
 from django.http import Http404
 from tastypie.utils import trailing_slash
 from tastypie import resources
@@ -17,7 +17,11 @@ from django.http import HttpResponse
 from django.core.cache import cache
 from tastypie.paginator import Paginator
 from tastypie.cache import SimpleCache
+import json
 
+from django.db import connection
+
+from tastypie.paginator import Paginator
 
 def build_content_type(format, encoding='utf-8'):
     """
@@ -40,12 +44,68 @@ class MyModelResource(resources.ModelResource):
         serialized = self.serialize(request, data, desired_format)
         return response_class(content=serialized, content_type=build_content_type(desired_format), **response_kwargs)
 
+class EstimatedCountPaginator(Paginator):
 
-class PageNumberPaginator(Paginator):
+    def get_next(self, limit, offset, count):
+        # The parent method needs an int which is higher than "limit + offset"
+        # to return a url. Setting it to an unreasonably large value, so that
+        # the parent method will always return the url.
+        count = 2 ** 64
+        return super(EstimatedCountPaginator, self).get_next(limit, offset, count)
+
+    def get_count(self):
+        return None
+
+    def get_estimated_count(self):
+        """Get the estimated count by using the database query planner."""
+        # If you do not have PostgreSQL as your DB backend, alter this method
+        # accordingly.
+        return self._get_postgres_estimated_count()
+
+    def _get_postgres_estimated_count(self):
+
+        # This method only works with postgres >= 9.0.
+        # If you need postgres vesrions less than 9.0, remove "(format json)"
+        # below and parse the text explain output.
+
+        def _get_postgres_version():
+            # Due to django connections being lazy, we need a cursor to make
+            # sure the connection.connection attribute is not None.
+            connection.cursor()
+            return connection.connection.server_version
+
+        try:
+            if _get_postgres_version() < 90000:
+                return
+        except AttributeError:
+            return
+
+        cursor = connection.cursor()
+        query = "select reltuples from pg_class where relname='boe_analisis_documento';"
+
+        # # Remove limit and offset from the query, and extract sql and params.
+        # query.low_mark = None
+        # query.high_mark = None
+        # query, params = self.objects.query.sql_with_params()
+        #
+        # # Fetch the estimated rowcount from EXPLAIN json output.
+        # query = 'explain (format json) %s' % query
+        cursor.execute(query)
+        # print query
+        rows = cursor.fetchone()[0]
+        # # Older psycopg2 versions do not convert json automatically.
+        # if isinstance(explain, basestring):
+        #     explain = json.loads(explain)
+        #     print explain
+        # rows = explain[0]['Plan']['Plan Rows']
+        return rows
+
     def page(self):
-        output = super(PageNumberPaginator, self).page()
-        output['page'] = int(self.offset / self.limit) + 1
-        return output
+        data = super(EstimatedCountPaginator, self).page()
+        data['meta']['estimated_count'] = self.get_estimated_count()
+        return data
+
+
 
 class DepartamentoResource(MyModelResource):
     class Meta:
@@ -276,49 +336,15 @@ class DocumentoResource(MyModelResource):
         }
         # authentication = BasicAuthentication()
         authorization = ReadOnlyAuthorization()
-        paginator_class = Paginator
+        paginator_class = EstimatedCountPaginator
         cache = SimpleCache(timeout=60*60*24)
     def determine_format(self, request):
         return 'application/json'
     def prepend_urls(self):
         return [url(r"^(?P<resource_name>%s)/search%s$" % (self._meta.resource_name, trailing_slash()), self.wrap_view('get_search'), name="api_get_search"),]
-    def get_search(self, request, **kwargs):
-        self.method_check(request, allowed=['get'])
-        self.is_authenticated(request)
-        self.throttle_check(request)
-        actualQuery = request.GET.get('q', '')
-        # Do the query.
-        print self.last_query
-        print actualQuery
-        if self.last_query != actualQuery:
-            sqs = SearchQuerySet().models(Documento).load_all().auto_query(request.GET.get('q', ''))
-            print len(sqs)
-            paginator = Paginator(sqs, 20)
-            self.last_query = actualQuery
-            self.search = paginator
-        else:
-            print 'guardado'
-            paginator = self.search
 
 
-        try:
-            page = paginator.page(int(request.GET.get('page', 1)))
-        except InvalidPage:
-            raise Http404("Sorry, no results on that page.")
 
-        objects = []
-
-        for result in page.object_list:
-            bundle = self.build_bundle(obj=result.object, request=request)
-            bundle = self.full_dehydrate(bundle)
-            objects.append(bundle)
-
-        object_list = {
-            'objects': objects,
-        }
-
-        self.log_throttled_access(request)
-        return self.create_response(request, object_list)
 
 
 
@@ -346,7 +372,7 @@ class BOEResource(DocumentoResource):
         }
         # authentication = BasicAuthentication()
         authorization = ReadOnlyAuthorization()
-        paginator_class = Paginator
+        paginator_class = EstimatedCountPaginator
         cache = SimpleCache(timeout=60*60*24)
 
 class BORMEResource(DocumentoResource):
@@ -368,5 +394,5 @@ class BORMEResource(DocumentoResource):
         }
         # authentication = BasicAuthentication()
         authorization = ReadOnlyAuthorization()
-        paginator_class = Paginator
+        paginator_class = EstimatedCountPaginator
         cache = SimpleCache(timeout=60*60*24)
