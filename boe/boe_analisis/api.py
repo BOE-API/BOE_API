@@ -12,8 +12,8 @@ from haystack.query import SearchQuerySet
 # from django.core.paginator import Paginator, InvalidPage
 from django.http import Http404
 from tastypie.utils import trailing_slash
-from tastypie import resources, Resource
-from tastypie.exceptions import  import ImmediateHttpResponse
+from tastypie import resources
+from tastypie.exceptions import  ImmediateHttpResponse
 from django.http import HttpResponse
 from django.core.cache import cache
 from tastypie.paginator import Paginator
@@ -26,7 +26,7 @@ from django.db import connection
 
 from tastypie.paginator import Paginator
 
-class BaseCorsResource(Resource):
+class BaseCorsResource(resources.Resource):
     """
     Class implementing CORS
     """
