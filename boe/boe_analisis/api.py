@@ -47,7 +47,10 @@ class MyModelResource(resources.ModelResource):
         return response_class(content=serialized, content_type=build_content_type(desired_format), **response_kwargs)
 
 class EstimatedCountPaginator(Paginator):
+    def __init__(self, request_data, objects, resource_uri=None, limit=None, offset=0, max_limit=1000, collection_name='objects'):
 
+        super(EstimatedCountPaginator, self).__init__(request_data, objects, resource_uri, limit, offset, max_limit, collection_name)
+        self.count = self.get_estimated_count()
     def get_next(self, limit, offset, count):
         # The parent method needs an int which is higher than "limit + offset"
         # to return a url. Setting it to an unreasonably large value, so that
@@ -58,10 +61,18 @@ class EstimatedCountPaginator(Paginator):
     def get_count(self):
         return None
     def get_next(self, limit, offset, count):
+        print "COUNT"
+        print self.count
+        if limit + offset > self.count:
+            if limit + offset >= self.max_id:
+                return None
         offset = self.cached[limit-1:limit][0].id + 1
+        print offset
         return self._generate_uri(limit, offset)
     def get_previous(self, limit, offset):
-        offset = self.objects.filter(id__lt = offset).order_by('-id')[limit -1 :limit][0].id
+        print offset
+        if offset > limit:
+            offset = self.objects.filter(id__lt = offset).order_by('-id')[limit -1 :limit][0].id
         return self._generate_uri(limit, offset)
     # def _generate_uri(self, limit, offset):
     #     pass
@@ -76,6 +87,14 @@ class EstimatedCountPaginator(Paginator):
         # accordingly.
         return self._get_postgres_estimated_count()
 
+    def get_max_id(self):
+        cursor = connection.cursor()
+        query = 'SELECT id FROM "boe_analisis_documento"  where url_xml is not null ORDER BY "boe_analisis_documento"."id" desc limit 1;'
+        cursor.execute(query)
+
+        self.max_id = cursor.fetchone()[0]
+        print self.max_id
+        return self.max_id
     def _get_postgres_estimated_count(self):
 
         # This method only works with postgres >= 9.0.
@@ -115,6 +134,7 @@ class EstimatedCountPaginator(Paginator):
         return rows
 
     def page(self):
+        self.max_id = None
         data = super(EstimatedCountPaginator, self).page()
         data['meta']['estimated_count'] = self.get_estimated_count()
         return data
