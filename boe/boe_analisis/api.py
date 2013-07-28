@@ -16,6 +16,7 @@ from tastypie import resources
 from django.http import HttpResponse
 from django.core.cache import cache
 from tastypie.paginator import Paginator
+from boe_analisis.paginator import ModelPagination
 from tastypie.cache import SimpleCache
 import json
 
@@ -34,6 +35,7 @@ def build_content_type(format, encoding='utf-8'):
     return "%s; charset=%s" % (format, encoding)
 
 class MyModelResource(resources.ModelResource):
+
     def create_response(self, request, data, response_class=HttpResponse, **response_kwargs):
         """
         Extracts the common "which-format/serialize/return-response" cycle.
@@ -55,6 +57,18 @@ class EstimatedCountPaginator(Paginator):
 
     def get_count(self):
         return None
+    def get_next(self, limit, offset, count):
+        offset = self.cached[limit-1:limit][0].id + 1
+        return self._generate_uri(limit, offset)
+    def get_previous(self, limit, offset):
+        offset = self.objects.filter(id__lt = offset).order_by('-id')[limit -1 :limit][0].id
+        return self._generate_uri(limit, offset)
+    # def _generate_uri(self, limit, offset):
+    #     pass
+    def get_slice(self, limit, offset):
+        self.cached = self.objects.filter(id__gte = offset).order_by('id')[:limit]
+        return self.cached
+
 
     def get_estimated_count(self):
         """Get the estimated count by using the database query planner."""
@@ -316,12 +330,14 @@ class DocumentoResource(MyModelResource):
 
 
     class Meta:
-        queryset = Documento.objects.exclude(url_xml=None).select_related()
+        last_id = 0
+        queryset = Documento.objects.exclude(url_xml=None)
         resource_name = 'documento'
         api_name = 'v1',
         detail_uri_name = 'identificador'
         list_allowed_methods = ['get', 'post']
         detail_allowed_methods = ['get', 'post']
+        ordering = ['id']
         filtering = {
             'titulo': ALL,
             'identificador': ALL,
@@ -340,8 +356,6 @@ class DocumentoResource(MyModelResource):
         cache = SimpleCache(timeout=60*60*24)
     def determine_format(self, request):
         return 'application/json'
-    def prepend_urls(self):
-        return [url(r"^(?P<resource_name>%s)/search%s$" % (self._meta.resource_name, trailing_slash()), self.wrap_view('get_search'), name="api_get_search"),]
 
 
 
