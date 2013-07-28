@@ -12,10 +12,12 @@ from haystack.query import SearchQuerySet
 # from django.core.paginator import Paginator, InvalidPage
 from django.http import Http404
 from tastypie.utils import trailing_slash
-from tastypie import resources
+from tastypie import resources, Resource
+from tastypie.exceptions import  import ImmediateHttpResponse
 from django.http import HttpResponse
 from django.core.cache import cache
 from tastypie.paginator import Paginator
+from tastypie import http
 from boe_analisis.paginator import ModelPagination
 from tastypie.cache import SimpleCache
 import json
@@ -23,6 +25,38 @@ import json
 from django.db import connection
 
 from tastypie.paginator import Paginator
+
+class BaseCorsResource(Resource):
+    """
+    Class implementing CORS
+    """
+    def create_response(self, *args, **kwargs):
+        response = super(BaseCorsResource, self).create_response(*args, **kwargs)
+        response['Access-Control-Allow-Origin'] = '*'
+        response['Access-Control-Allow-Headers'] = 'Content-Type'
+        return response
+
+    def method_check(self, request, allowed=None):
+        if allowed is None:
+            allowed = []
+
+        request_method = request.method.lower()
+        allows = ','.join(map(str.upper, allowed))
+
+        if request_method == 'options':
+            response = HttpResponse(allows)
+            response['Access-Control-Allow-Origin'] = '*'
+            response['Access-Control-Allow-Headers'] = 'Content-Type'
+            response['Allow'] = allows
+            raise ImmediateHttpResponse(response=response)
+
+        if not request_method in allowed:
+            response = http.HttpMethodNotAllowed(allows)
+            response['Allow'] = allows
+            raise ImmediateHttpResponse(response=response)
+
+        return request_method
+
 
 def build_content_type(format, encoding='utf-8'):
     """
@@ -34,7 +68,7 @@ def build_content_type(format, encoding='utf-8'):
 
     return "%s; charset=%s" % (format, encoding)
 
-class MyModelResource(resources.ModelResource):
+class MyModelResource(BaseCorsResource, resources.ModelResource):
 
     def create_response(self, request, data, response_class=HttpResponse, **response_kwargs):
         """
@@ -64,8 +98,6 @@ class EstimatedCountPaginator(Paginator):
         print "COUNT"
         print self.count
         if limit + offset > self.count:
-
-        
             if limit + offset >= self.get_max_id():
 
                 return None
