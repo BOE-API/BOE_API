@@ -64,7 +64,10 @@ class EstimatedCountPaginator(Paginator):
         print "COUNT"
         print self.count
         if limit + offset > self.count:
-            if limit + offset >= self.max_id:
+
+        
+            if limit + offset >= self.get_max_id():
+
                 return None
         offset = self.cached[limit-1:limit][0].id + 1
         print offset
