@@ -33,13 +33,13 @@ v1_api.register(PartidoResource())
 
 urlpatterns = patterns('',
     # url(r'^$', 'boe_analisis.views.home', name='home_docs'),
-    url(r'^api/', (include(v1_api.urls))),
+    url(r'^', (include(v1_api.urls))),
     # url(r'^documento/(?P<identificador>[\w|\-]+)$', 'boe_analisis.views.individual', name="individual_doc"),
     # url(r'^materias/(?P<materia>[\w|\-]+)/$', 'boe_analisis.views.materias' , name="individual_materia"),
     # url(r'^materias/$', 'boe_analisis.views.listado_materias', name='listado_materias'),
     # url(r'^graficos/$', 'boe_analisis.views.graficos', name='graficos'),
-    url(r'^api/v1/years/$', ('boe_analisis.views.years')),
-    url(r'^api/v1/years/materia/(?P<materia>\d+)$', 'boe_analisis.views.years'),
+    url(r'^/v1/years/$', ('boe_analisis.views.years')),
+    url(r'^/v1/years/materia/(?P<materia>\d+)$', 'boe_analisis.views.years'),
     # url(r'^docs/', include("tastydocs.urls"), {"api": v1_api}) # api must be a reference to the TastyPie API object.
 
                        )
