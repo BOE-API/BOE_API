@@ -25,8 +25,8 @@ url_s_pattern = "http://www.boe.es/diario_boe/xml.php?id=BOE-S-{0}-{1}"
 url_a_pattern =  "http://www.boe.es/diario_boe/xml.php?id={0}"
 url_a_html_pattern = "http://www.boe.es/diario_boe/txt.php?id={0}"
 
-r_count = redis.StrictRedis(host='23.23.215.173', port=6379, db=0)
-r = redis.StrictRedis(host='REDIS', port=6379, db=0)
+# r_count = redis.StrictRedis(host='23.23.215.173', port=6379, db=0)
+# r = redis.StrictRedis(host='REDIS', port=6379, db=0)
 max = 2;
 count = 0;
 
@@ -261,23 +261,23 @@ def fillDocumentXMLData(url_xml_Input, documento):
     return documento
 
 
-def fillRedis():
-    pattern = '*'
-
-    while int(anyo) <= 2013:
-        search = pattern.format(r_count.get('anyo'))
-        r_count.incr('anyo')
-        print search
-        for k in r.keys(search):
-            documento = Documento()
-            print k
-            try:
-                fillDocumentXMLData(k, documento)
-                r.delete(k)
-            except:
-                pass
-
-        anyo = r_count.get('anyo')
+# def fillRedis():
+#     pattern = '*'
+#
+#     while int(anyo) <= 2013:
+#         search = pattern.format(r_count.get('anyo'))
+#         r_count.incr('anyo')
+#         print search
+#         for k in r.keys(search):
+#             documento = Documento()
+#             print k
+#             try:
+#                 fillDocumentXMLData(k, documento)
+#                 r.delete(k)
+#             except:
+#                 pass
+#
+#         anyo = r_count.get('anyo')
 
 
 # for k in r.keys('*-18??-*'):
