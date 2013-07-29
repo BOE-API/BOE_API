@@ -2,7 +2,7 @@
 from django.db import models
 from pymongo import MongoClient
 from django.core.management.base import BaseCommand, CommandError
-from boe_analisis.models import Diario, Documento, Departamento, Rango, Origen_legislativo
+from boe_analisis.models import Diario, Legislatura ,Documento, Departamento, Rango, Origen_legislativo
 from boe_analisis.models import Estado_consolidacion, Nota, Materia, Alerta, Palabra, Referencia
 import os
 import sys
@@ -125,6 +125,7 @@ def fillDocumentXMLData(url_xml_Input, documento):
         documento.numero_oficial = metadatos.numero_oficial.text
     if hasattr(metadatos, 'fecha_disposicion'):
         documento.fecha_disposicion = textToDate(metadatos.fecha_disposicion.text)
+        documento.legislatura = Legislatura.objects.get(final = None)
     if hasattr(metadatos, 'fecha_publicacion'):
         documento.fecha_publicacion = textToDate(metadatos.fecha_publicacion.text)
         # print textToDate(metadatos.fecha_publicacion.text)
