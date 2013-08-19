@@ -1,0 +1,9 @@
+workspace.xml
+settings.py
+.idea/
+*.sh
+schema.xml
+solrconfig.xml
+env/
+boe/static
+boe/local_settings.py
