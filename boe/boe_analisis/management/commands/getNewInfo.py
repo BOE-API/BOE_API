@@ -50,6 +50,8 @@ cursor = connection.cursor()
 cursor.execute("SELECT max(fecha_publicacion) from boe_analisis_documento")
 val = cursor.fetchone()
 ultima_fecha = val[0]
+if not ultima_fecha:
+    ultima_fecha = datetime.date(year=1960, month=1, day=1)
 hoy = datetime.date.today() + datetime.timedelta(days=1)
 url = "http://www.boe.es/boe/dias/{0}/{1}/{2}/"
 url_boe = "http://www.boe.es/diario_boe/xml.php?id={0}"
