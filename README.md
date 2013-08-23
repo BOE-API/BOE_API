@@ -8,7 +8,7 @@ Requirements
 
 Tested on Ubuntu 12.04.
 
-- PostgreSQL 9.2
+- PostgreSQL 9.1
 - Memcache (optional, if you're not going to use it, delete it from settings)
 - Install ```python pip install -r requirements.txt```
 
