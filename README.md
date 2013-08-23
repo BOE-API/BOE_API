@@ -10,7 +10,7 @@ Tested on Ubuntu 12.04.
 
 - PostgreSQL 9.2
 - Memcache (optional, if you're not going to use it, delete it from settings)
-- Install pip install -r requirements.txt
+- Install ```python pip install -r requirements.txt```
 
 Use
 =======
@@ -19,7 +19,7 @@ To execute the API:
 ```python
 python manage.py runserver
 ```
-Go to your browser and type http://localhost:8080/v1/format=json and you should see API's endpoints.
+Go to your browser and type ```URL http://localhost:8080/v1/format=json``` and you should see API's endpoints.
 
 To fetch new laws (from BOE.es) you can execute:
 ```python
