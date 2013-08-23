@@ -19,7 +19,7 @@ To execute the API:
 ```python
 python manage.py runserver
 ```
-Go to your browser and type ```URL http://localhost:8080/v1/format=json``` and you should see API's endpoints.
+Go to your browser and type ```http://localhost:8080/v1/format=json``` and you should see API's endpoints.
 
 To fetch new laws (from BOE.es) you can execute:
 ```python
