@@ -14,6 +14,10 @@ Tested on Ubuntu 12.04.
 
 Use
 =======
+Sincronize DB:
+```python
+python manage.py syncdb
+```
 
 To execute the API:
 ```python
