@@ -16,13 +16,15 @@ Use
 =======
 
 To execute the API:
+```python
 python manage.py runserver
-
+```
 Go to your browser and type http://localhost:8080/v1/format=json and you should see API's endpoints.
 
 To fetch new laws (from BOE.es) you can execute:
+```python
 python mange.py getNewInfo 
-
+```
 and will fetch documents since last day stored on database.
 
 
