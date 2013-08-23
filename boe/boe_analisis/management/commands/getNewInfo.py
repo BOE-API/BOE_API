@@ -13,21 +13,20 @@ from pattern.web import URL
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
-        print 'Probando mongo'
+        print 'Fetching Data...'
 
         all_docs = []
         for sumario in getSumarios():
             procesarSumario(sumario, all_docs)
 
         for doc in all_docs:
-            print doc
             try:
                 d = ProcessDocument(doc)
                 d.saveDoc()
 
             except Exception, e:
                 print e
-                print "fallo" + doc
+                
 
 
 def daterange(start, stop, step_days=1):
