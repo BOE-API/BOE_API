@@ -8,8 +8,6 @@ from tastypie import fields
 from tastypie.authorization import DjangoAuthorization, ReadOnlyAuthorization
 from tastypie.authentication import ApiKeyAuthentication, BasicAuthentication
 from django.conf.urls import url
-from haystack.query import SearchQuerySet
-# from django.core.paginator import Paginator, InvalidPage
 from django.http import Http404
 from tastypie.utils import trailing_slash
 from tastypie import resources
