@@ -1,6 +1,5 @@
 __author__ = 'Carlos'
 from django.db import models
-from pymongo import MongoClient
 from django.core.management.base import BaseCommand, CommandError
 from boe_analisis.models import Diario, DocumentoAnuncio,Legislatura ,Documento, Departamento, Rango, Origen_legislativo
 from boe_analisis.models import Estado_consolidacion, Nota, Materia, Alerta, Palabra, Referencia
@@ -9,7 +8,6 @@ import os
 import sys
 import locale
 from django.db.models import Q
-import redis
 import re
 from datetime import datetime
 from lxml import etree, objectify
