@@ -14,7 +14,7 @@ from lxml import etree, objectify
 
 from pattern.web import URL
 
-
+last_legislatura = Legislatura.objects.get_or_none(final__isnull = True)
 
 
 class ProcessDocument():
@@ -123,6 +123,18 @@ class ProcessDocument():
         doc.rango = self.get_or_create(Rango, codigo=rango_codigo, titulo=rango_titulo)
         doc.numero_oficial = self.getElement(self.metadatos, 'numero_oficial')
         doc.fecha_disposicion = self.textToDate(self.getElement(self.metadatos, 'fecha_disposicion'))
+        if doc.fecha_disposicion:
+            if (doc.fecha_disposicion.date() >= last_legislatura.inicio):
+                doc.legislatura =  last_legislatura
+                print doc.legislatura
+            else:
+                legislatura = Legislatura.objects.get_or_none(inicio__lte = doc.fecha_disposicion, final__gte = doc.fecha_disposicion)
+                print legislatura
+                if legislatura is not None:
+                    print legislatura
+                    doc.legislatura = legislatura
+
+
         doc.fecha_publicacion = self.textToDate(self.getElement(self.metadatos, 'fecha_publicacion'))
         doc.fecha_vigencia = self.textToDate(self.getElement(self.metadatos, 'fecha_vigencia'))
         doc.fecha_derogacion = self.textToDate(self.getElement(self.metadatos, 'fecha_derogacion'))

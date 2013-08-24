@@ -3,6 +3,15 @@ from django.db import models
 import datetime
 
 # Create your models here.
+class GetOrNoneManager(models.Manager):
+    """Adds get_or_none method to objects
+    """
+    def get_or_none(self, **kwargs):
+        try:
+            return self.get(**kwargs)
+        except self.model.DoesNotExist:
+            return None
+
 
 class CodigoTitulo(models.Model):
     codigo = models.CharField(max_length=10)
@@ -77,6 +86,8 @@ class Legislatura(models.Model):
     presidente = models.CharField(max_length=300)
     nombre_legislatura = models.CharField(max_length=600)
 
+
+    objects = GetOrNoneManager()
     class Meta:
         ordering = ['inicio']
 
