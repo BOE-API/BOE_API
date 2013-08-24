@@ -27,9 +27,19 @@ Go to your browser and type ```http://localhost:8080/v1/format=json``` and you s
 
 To fetch new laws (from BOE.es) you can execute:
 ```python
-python mange.py getNewInfo 
+python manage.py getNewInfo 
 ```
-and will fetch documents since last day stored on database.
+and will fetch documents since last day stored on database or since 1960 if the database is empty.
+
+You can pass a date to fetch laws since that date:
+
+```python
+
+python manage.py getNewInfo YYYY  
+python manage.py getNewInfo YYYY MM
+python manage.py getNewInfo YYYY MM DD
+
+```
 
 
 
